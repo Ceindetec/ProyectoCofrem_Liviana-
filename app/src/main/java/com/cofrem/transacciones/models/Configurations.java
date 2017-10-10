@@ -6,11 +6,16 @@ public class Configurations {
      * Llave del Bundle para la selección de configuracion
      */
     public final static String keyConfiguration = "configuracion";
+    public final static String keyPasoClaveTecnico = "pasoclave";
 
     /**
      * Configuraciones disponibles
      */
-    public final static int configuracionRegistrarConfigInicial = 1;
+    public final static int configuracionRegistrarConfigInicial = 0;
+
+    public final static int configuracionConClaveLocal = 0;
+
+    public final static int configuracionConClaveWeb = 1;
 
     public final static int configuracionRegistrar = 2;
 

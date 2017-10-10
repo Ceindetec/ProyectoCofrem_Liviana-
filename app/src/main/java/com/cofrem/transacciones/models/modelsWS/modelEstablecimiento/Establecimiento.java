@@ -1,5 +1,7 @@
 package com.cofrem.transacciones.models.modelsWS.modelEstablecimiento;
 
+import android.content.Context;
+
 import com.cofrem.transacciones.models.modelsWS.MessageWS;
 
 public class Establecimiento {
@@ -9,7 +11,9 @@ public class Establecimiento {
 
     private InformacionEstablecimiento informacionEstablecimiento;
     private ConexionEstablecimiento conexionEstablecimiento;
+    private String Mensaje;
     private MessageWS messageWS;
+    private Context context;
 
     public Establecimiento(MessageWS messageWS) {
         this.messageWS = messageWS;
@@ -21,6 +25,16 @@ public class Establecimiento {
         this.informacionEstablecimiento = informacionEstablecimiento;
         this.conexionEstablecimiento = conexionEstablecimiento;
         this.messageWS = messageWS;
+    }
+
+    public Establecimiento(String mensaje) {
+        Mensaje = mensaje;
+    }
+
+    public Establecimiento(InformacionEstablecimiento informacionEstablecimiento, ConexionEstablecimiento conexionEstablecimiento, String mensaje) {
+        this.informacionEstablecimiento = informacionEstablecimiento;
+        this.conexionEstablecimiento = conexionEstablecimiento;
+        Mensaje = mensaje;
     }
 
     public InformacionEstablecimiento getInformacionEstablecimiento() {
@@ -47,4 +61,11 @@ public class Establecimiento {
         this.messageWS = messageWS;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }

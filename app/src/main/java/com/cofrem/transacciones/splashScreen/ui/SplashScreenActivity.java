@@ -152,6 +152,9 @@ public class SplashScreenActivity extends Activity implements SplashScreenView {
                 getString(R.string.general_message_verify_configuration_initial_no_existe)
         );
 
+        //Navegando a la ventana de configuración
+        navigateToRegisterConfiguracionScreen();
+
     }
 
     /**
@@ -210,9 +213,6 @@ public class SplashScreenActivity extends Activity implements SplashScreenView {
                 "\n" +
                 getString(R.string.general_message_insert_configuracion_acceso_success)
         );
-
-        //Navegando a la ventana de configuración
-        navigateToRegisterConfiguracionScreen();
 
     }
 
@@ -484,6 +484,7 @@ public class SplashScreenActivity extends Activity implements SplashScreenView {
                 Bundle args = new Bundle();
 
                 args.putInt(Configurations.keyConfiguration, Configurations.configuracionRegistrarConfigInicial);
+                args.putInt(Configurations.keyPasoClaveTecnico, Configurations.configuracionConClaveLocal);
 
                 Intent intent = new Intent(SplashScreenActivity.this, RegisterConfigurationScreenActivity_.class);
                 //Agregadas banderas para no retorno
