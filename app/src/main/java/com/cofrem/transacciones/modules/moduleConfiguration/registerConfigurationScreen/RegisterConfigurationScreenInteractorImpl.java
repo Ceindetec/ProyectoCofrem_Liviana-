@@ -3,6 +3,7 @@ package com.cofrem.transacciones.modules.moduleConfiguration.registerConfigurati
 import android.content.Context;
 
 import com.cofrem.transacciones.models.Configurations;
+import com.cofrem.transacciones.models.modelsWS.modelEstablecimiento.Establecimiento;
 
 class RegisterConfigurationScreenInteractorImpl implements RegisterConfigurationScreenInteractor {
     /**
@@ -41,21 +42,52 @@ class RegisterConfigurationScreenInteractorImpl implements RegisterConfiguration
      * @param passAdmin
      */
     @Override
-    public void validarPasswordTecnico(Context context, String passAdmin) {
+    public void validarPasswordTecnicoLocal(Context context, String passAdmin) {
 
         //Valida el acceso a la configuracion del dispositivo
-        registerConfigurationScreenRepository.validarPasswordTecnico(context, passAdmin);
+        registerConfigurationScreenRepository.validarPasswordTecnicoLocal(context, passAdmin);
 
+    }
+
+    /**
+     * Valida el acceso a la configuracion del dispositivo mediante la contraseña de administrador
+     *
+     * @param context
+     * @param passAdmin
+     */
+    @Override
+    public void validarPasswordTecnicoWeb(Context context, String passAdmin) {
+
+        //Valida el acceso a la configuracion del dispositivo
+        registerConfigurationScreenRepository.validarPasswordTecnicoWeb(context, passAdmin);
+
+    }
+
+
+    /**
+     * Metodo encargado de validar la existencia de una terminal
+     *
+     * @param context
+     * @param configurations
+     */
+    @Override
+    public void validarTerminal(Context context, Configurations configurations) {
+        registerConfigurationScreenRepository.validarTerminal(context,configurations);
     }
 
     /**
      * Registra los parametros de conexion del dispositivo
      *
      * @param context
-     * @param configurations
+     * @param establecimiento
      */
     @Override
-    public void registrarConfiguracionConexion(Context context, Configurations configurations) {
-        registerConfigurationScreenRepository.registrarConfiguracionConexion(context, configurations);
+    public void setAsignaID(Context context, Establecimiento establecimiento) {
+        registerConfigurationScreenRepository.setAsignaID(context, establecimiento);
+    }
+
+    @Override
+    public void registerConexionEstablecimineto(Establecimiento establecimiento) {
+        registerConfigurationScreenRepository.registerConexionEstablecimineto(establecimiento);
     }
 }

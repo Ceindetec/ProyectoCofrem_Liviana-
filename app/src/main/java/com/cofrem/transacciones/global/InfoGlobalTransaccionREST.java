@@ -2,10 +2,23 @@ package com.cofrem.transacciones.global;
 
 public class InfoGlobalTransaccionREST {
 
-    public final static String URL_BASE = "http://192.168.2.124/transaccionesTransaccion";
+//    public final static String URL_BASE = "http://192.168.1.52/WebCofrem/public/api";
+
+    public final static String HTTP = "http://";
+    public final static String URL_BASE = "192.168.0.20";
+    public final static String WEB_SERVICE_URI = "/WebCofrem/public/api/";
     public final static String FEED_KEY = "statusTransaction";
 
     // PARAM_URL de InfoGlobalTransaccionREST
-    public final static String DATA_SERVER = "DATA_SERVER.php";
-    public final static String DATA_TRANSACCION = "DATA_TRANSACTION.php";
+    public final static String METHODO_COMUNICACION = "comunicacion";
+    public final static String METHODO_TERMINAL = "terminal";
+    public final static String METHODO_CLAVE_SUCURSAL = "clavesucursal";
+    public final static String METHODO_CLAVE_TERMINAL = "claveterminal";
+    public final static String METHODO_ASIGNAID = "asignaID";
+
+
+    public final static String KEY_JSON_RESULTADO = "resultado";
+    public final static String KEY_JSON_ESTADO = "estado";
+    public final static String KEY_JSON_DATA = "data";
+    public final static String KEY_JSON_MENSAJE = "mensaje";
 }

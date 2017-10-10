@@ -24,12 +24,12 @@ public class VolleyTransaction {
      *
      * @param context
      * @param parameters
-     * @param moduleTransaccion
+     * @param URLTransaccion
      * @param callback
      */
     public void getData(Context context,
                         HashMap<String, String> parameters,
-                        String moduleTransaccion,
+                        String URLTransaccion,
                         final VolleyCallback callback) {
 
         // Añadir petición GSON a la cola
@@ -42,7 +42,7 @@ public class VolleyTransaction {
                         Request.Method.POST,
 
                         //@param PARAM_URL
-                        InfoGlobalTransaccionREST.URL_BASE + "/" + moduleTransaccion,
+                         URLTransaccion,
 
                         //@param Class<T> clazz Clase o modelo en el que se formatean los datos
                         JsonObject.class,
@@ -56,7 +56,7 @@ public class VolleyTransaction {
                             public void onResponse(JsonObject response) {
 
                                 try {
-                                    JsonObject jsonObject = response.getAsJsonObject(InfoGlobalTransaccionREST.FEED_KEY);
+                                    JsonObject jsonObject = response.getAsJsonObject("resultado");
                                     callback.onSuccess(jsonObject);
 
                                 } catch (JsonIOException e) {
@@ -77,8 +77,8 @@ public class VolleyTransaction {
                             @Override
                             public void onErrorResponse(VolleyError error) {
 
-                                Log.d(TAG_ERROR_VOLLEY, error.getMessage());
-                                callback.onError(error.getMessage());
+//                                Log.d(TAG_ERROR_VOLLEY, "error");
+                                callback.onError("Error: no fue posible establecer comunicación con el servidor");
 
                             }
                         }

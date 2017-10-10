@@ -60,7 +60,7 @@ public class Transaccion {
 
 
     /**
-     * Modelo para el registro del Establecimiento
+     * Modelo para el registro del Establishment
      */
     private int id;
     private String numero_cargo;

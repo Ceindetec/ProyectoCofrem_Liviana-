@@ -1,5 +1,7 @@
 package com.cofrem.transacciones.models.modelsWS.modelEstablecimiento;
 
+import com.google.gson.JsonObject;
+
 import org.ksoap2.serialization.SoapObject;
 
 public class InformacionEstablecimiento {
@@ -7,14 +9,14 @@ public class InformacionEstablecimiento {
     //Modelo usado en la respuesta del WS para la respuesta terminalResult
 
     //Modelado rapido de llaves del terminalResulta
-    public static final String CODIGO_PUNTO_KEY = "codigoPunto";
-    public static final String NOMBRE_PUNTO_KEY = "nombrePunto";
-    public static final String DIRECCION_PUNTO_KEY = "direccionPunto";
-    public static final String CIUDAD_PUNTO_KEY = "ciudadPunto";
-    public static final String NIT_COMERCIO_KEY = "nitComercio";
-    public static final String RAZON_SOCIAL_COMERCIO_KEY = "razonSocialComercio";
+    public static final String CODIGO_PUNTO_KEY = "sucursal_id";
+    public static final String NOMBRE_PUNTO_KEY = "nombre_sucursal";
+    public static final String DIRECCION_PUNTO_KEY = "direccion";
+    public static final String CIUDAD_PUNTO_KEY = "ciudad";
+    public static final String NIT_COMERCIO_KEY = "nit";
+    public static final String RAZON_SOCIAL_COMERCIO_KEY = "razon_social";
 
-    //Informacion del Establecimiento
+    //Informacion del Establishment
 
     private String codigoPunto;
     private String nombrePunto;
@@ -23,24 +25,39 @@ public class InformacionEstablecimiento {
     private String nitComercio;
     private String razonSocialComercio;
 
-    /**
-     * Constructor de la clase que recibe un Objeto tipo SoapObject
-     *
-     * @param soap
-     */
-    public InformacionEstablecimiento(SoapObject soap) {
+//    /**
+//     * Constructor de la clase que recibe un Objeto tipo SoapObject
+//     *
+//     * @param soap
+//     */
+//    public InformacionEstablecimiento(SoapObject soap) {
+//
+//        this.codigoPunto = soap.getPropertyAsString(CODIGO_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(CODIGO_PUNTO_KEY);
+//
+//        this.nombrePunto = soap.getPropertyAsString(NOMBRE_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(NOMBRE_PUNTO_KEY);
+//
+//        this.direccionPunto = soap.getPropertyAsString(DIRECCION_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(DIRECCION_PUNTO_KEY);
+//
+//        this.ciudadPunto = soap.getPropertyAsString(CIUDAD_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(CIUDAD_PUNTO_KEY);
+//
+//        this.nitComercio = soap.getPropertyAsString(NIT_COMERCIO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(NIT_COMERCIO_KEY);
+//
+//        this.razonSocialComercio = soap.getPropertyAsString(RAZON_SOCIAL_COMERCIO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(RAZON_SOCIAL_COMERCIO_KEY);
+//    }
 
-        this.codigoPunto = soap.getPropertyAsString(CODIGO_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(CODIGO_PUNTO_KEY);
+    public InformacionEstablecimiento(JsonObject data){
 
-        this.nombrePunto = soap.getPropertyAsString(NOMBRE_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(NOMBRE_PUNTO_KEY);
+        this.codigoPunto = data.get(CODIGO_PUNTO_KEY).getAsString();
 
-        this.direccionPunto = soap.getPropertyAsString(DIRECCION_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(DIRECCION_PUNTO_KEY);
+        this.nombrePunto = data.get(NOMBRE_PUNTO_KEY).getAsString();
 
-        this.ciudadPunto = soap.getPropertyAsString(CIUDAD_PUNTO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(CIUDAD_PUNTO_KEY);
+        this.direccionPunto = data.get(DIRECCION_PUNTO_KEY).getAsString();
 
-        this.nitComercio = soap.getPropertyAsString(NIT_COMERCIO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(NIT_COMERCIO_KEY);
+        this.ciudadPunto = data.get(CIUDAD_PUNTO_KEY).getAsString();
 
-        this.razonSocialComercio = soap.getPropertyAsString(RAZON_SOCIAL_COMERCIO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(RAZON_SOCIAL_COMERCIO_KEY);
+        this.nitComercio = data.get(NIT_COMERCIO_KEY).getAsString();
+
+        this.razonSocialComercio = data.get(RAZON_SOCIAL_COMERCIO_KEY).getAsString();
     }
 
     public String getCodigoPunto() {

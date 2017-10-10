@@ -26,7 +26,7 @@ class DatabaseManager {
     static class DatabaseApp {
 
         static final String DATABASE_NAME = "app_cofrem_transactions.db";
-        static final int DATABASE_VERSION = 8;
+        static final int DATABASE_VERSION = 2;
 
     }
 
@@ -205,7 +205,6 @@ class DatabaseManager {
          * Columnas de la tabla
          */
         static final String COLUMN_CONFIGURACION_CONEXION_HOST = "host";
-        static final String COLUMN_CONFIGURACION_CONEXION_PORT = "puerto";
         static final String COLUMN_CONFIGURACION_CONEXION_DISPOSITIVO = "dispositivo";
         static final String COLUMN_CONFIGURACION_CONEXION_REGISTRO = "registro";
         static final String COLUMN_CONFIGURACION_CONEXION_ESTADO = "estado";
@@ -217,7 +216,6 @@ class DatabaseManager {
         static final String CREATE_TABLE_CONFIGURACION_CONEXION =
                 "CREATE TABLE " + TABLE_NAME_CONFIGURACION_CONEXION + "(" +
                         COLUMN_CONFIGURACION_CONEXION_HOST + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +
-                        COLUMN_CONFIGURACION_CONEXION_PORT + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +
                         COLUMN_CONFIGURACION_CONEXION_DISPOSITIVO + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +
                         COLUMN_CONFIGURACION_CONEXION_REGISTRO + " " + TIMESTAMP_TYPE + " " + ATTR_NOT_NULL + "," +
                         COLUMN_CONFIGURACION_CONEXION_ESTADO + " " + INT_TYPE + " " + ATTR_NOT_NULL + ")";

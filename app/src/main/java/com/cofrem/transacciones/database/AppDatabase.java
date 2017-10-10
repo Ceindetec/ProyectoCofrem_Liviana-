@@ -745,10 +745,10 @@ public final class AppDatabase extends SQLiteOpenHelper {
     /**
      * Metodo para insertar registro de la configuracion de la conexion
      *
-     * @param configurations Configurations información de la configuración
+     * @param conexionEstablecimiento información de la configuración
      * @return Boolean estado de la transaccion
      */
-    public boolean insertConfiguracionConexion(Configurations configurations) {
+    public boolean insertConfiguracionConexion(ConexionEstablecimiento conexionEstablecimiento) {
 
         boolean transaction = false;
 
@@ -768,9 +768,8 @@ public final class AppDatabase extends SQLiteOpenHelper {
             ContentValues contentValuesInsert = new ContentValues();
 
             // Almacena los valores a insertar
-            contentValuesInsert.put(DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_HOST, configurations.getHost());
-            contentValuesInsert.put(DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_PORT, configurations.getPort());
-            contentValuesInsert.put(DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_DISPOSITIVO, configurations.getCodigoDispositivo());
+            contentValuesInsert.put(DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_HOST, conexionEstablecimiento.getIp1());
+            contentValuesInsert.put(DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_DISPOSITIVO, conexionEstablecimiento.getCodigoTerminal());
             contentValuesInsert.put(DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_REGISTRO, getDateTime());
             contentValuesInsert.put(DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_ESTADO, 1);
 
@@ -822,14 +821,13 @@ public final class AppDatabase extends SQLiteOpenHelper {
 
         cursorQuery = getWritableDatabase().rawQuery(
                 "SELECT " + DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_HOST +
-                        " , " + DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_PORT +
                         " FROM " + DatabaseManager.TableConfiguracionConexion.TABLE_NAME_CONFIGURACION_CONEXION +
                         " WHERE " + DatabaseManager.TableConfiguracionConexion.COLUMN_CONFIGURACION_CONEXION_ESTADO + " = '1' " +
                         " LIMIT 1", null
         );
 
         if (cursorQuery.moveToFirst()) {
-            urlTransacciones = cursorQuery.getString(0) + ":" + cursorQuery.getString(1);
+            urlTransacciones = cursorQuery.getString(0);
         }
 
         cursorQuery.close();
@@ -883,36 +881,37 @@ public final class AppDatabase extends SQLiteOpenHelper {
                     contentValuesInsertInformacionDispositivo
             );
 
-            if (!conexionEstablecimiento.getClaveTecnivo().isEmpty()) {
-
-                // Eliminacion de registros anteriores en la base de datos
-                getWritableDatabase().delete(
-                        DatabaseManager.TableConfiguracionAcceso.TABLE_NAME_CONFIGURACION_ACCESO,
-                        "",
-                        null
-                );
-
-                // Inicializacion de la variable de contenidos del registro de acceso
-                ContentValues contentValuesInformacionAcceso = new ContentValues();
-
-                // Almacena los valores a actualizar
-                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_CLAVE_TECNICA, conexionEstablecimiento.getClaveTecnivo());
-                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_CLAVE_ADMIN, conexionEstablecimiento.getClaveComercio());
-                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_REGISTRO, getDateTime());
-                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_ESTADO, 1);
-
-                getWritableDatabase().insert(
-                        DatabaseManager.TableConfiguracionAcceso.TABLE_NAME_CONFIGURACION_ACCESO,
-                        null,
-                        contentValuesInformacionAcceso
-                );
-
-                getWritableDatabase().setTransactionSuccessful();
-
-                transaction = true;
-
-            }
-
+//            if (!conexionEstablecimiento.getClaveTecnivo().isEmpty()) {
+//
+//                // Eliminacion de registros anteriores en la base de datos
+//                getWritableDatabase().delete(
+//                        DatabaseManager.TableConfiguracionAcceso.TABLE_NAME_CONFIGURACION_ACCESO,
+//                        "",
+//                        null
+//                );
+//
+//                // Inicializacion de la variable de contenidos del registro de acceso
+//                ContentValues contentValuesInformacionAcceso = new ContentValues();
+//
+//                // Almacena los valores a actualizar
+//                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_CLAVE_TECNICA, conexionEstablecimiento.getClaveTecnivo());
+//                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_CLAVE_ADMIN, conexionEstablecimiento.getClaveComercio());
+//                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_REGISTRO, getDateTime());
+//                contentValuesInformacionAcceso.put(DatabaseManager.TableConfiguracionAcceso.COLUMN_CONFIGURACION_ACCESO_ESTADO, 1);
+//
+//                getWritableDatabase().insert(
+//                        DatabaseManager.TableConfiguracionAcceso.TABLE_NAME_CONFIGURACION_ACCESO,
+//                        null,
+//                        contentValuesInformacionAcceso
+//                );
+//
+//                getWritableDatabase().setTransactionSuccessful();
+//
+//
+//
+//            }
+            getWritableDatabase().setTransactionSuccessful();
+            transaction = true;
         } catch (SQLException e) {
 
             e.printStackTrace();

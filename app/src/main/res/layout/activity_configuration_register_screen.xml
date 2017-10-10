@@ -23,6 +23,21 @@
         android:layout_marginBottom="@dimen/appMarginBottom" />
 
     <include
+        android:id="@+id/bodyContentConfiguration"
+        layout="@layout/content_configuracion_register_configuracion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerContent"
+        android:visibility="gone" />
+    <include
+        android:id="@+id/bodyContentConfigurationInfoTerminal"
+        layout="@layout/content_configuracion_register_info_terminal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerContent"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/bodyContentConfigurationPassTecnico"
         layout="@layout/content_configuracion_register_paso_pass_tecnico"
         android:layout_width="match_parent"
@@ -60,6 +75,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerContent"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

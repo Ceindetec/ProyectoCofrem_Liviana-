@@ -59,6 +59,8 @@
 
     <string name="transaction_text_numero_documento">Ingrese número de documento:</string>
 
+    <string name="transaction_text_seleccione_el_servicio">Seleccione el servico:</string>
+
     <string name="transaction_error_numero_documento">Debe ingresar un número de documento</string>
 
     <string name="transaction_text_verificacion_numero_documento">Número de documento:</string>

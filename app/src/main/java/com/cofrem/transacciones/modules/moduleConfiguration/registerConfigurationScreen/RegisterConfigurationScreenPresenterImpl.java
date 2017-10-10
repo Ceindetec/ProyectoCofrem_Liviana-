@@ -2,6 +2,7 @@ package com.cofrem.transacciones.modules.moduleConfiguration.registerConfigurati
 
 import android.content.Context;
 
+import com.cofrem.transacciones.models.modelsWS.modelEstablecimiento.Establecimiento;
 import com.cofrem.transacciones.modules.moduleConfiguration.registerConfigurationScreen.events.RegisterConfigurationScreenEvent;
 import com.cofrem.transacciones.modules.moduleConfiguration.registerConfigurationScreen.ui.RegisterConfigurationScreenView;
 import com.cofrem.transacciones.lib.EventBus;
@@ -10,6 +11,7 @@ import com.cofrem.transacciones.models.Configurations;
 
 public class RegisterConfigurationScreenPresenterImpl implements RegisterConfigurationScreenPresenter {
 
+    private Establecimiento establecimiento;
 
     /**
      * #############################################################################################
@@ -69,9 +71,34 @@ public class RegisterConfigurationScreenPresenterImpl implements RegisterConfigu
      * @param passAdmin
      */
     @Override
-    public void validarPasswordTecnico(Context context, String passAdmin) {
+    public void validarPasswordTecnicoLocal(Context context, String passAdmin) {
         if (registerConfigurationScreenView != null) {
-            registerConfigurationScreenInteractor.validarPasswordTecnico(context, passAdmin);
+            registerConfigurationScreenInteractor.validarPasswordTecnicoLocal(context, passAdmin);
+        }
+    }
+    /**
+     * Valida el acceso a la configuracion del dispositivo mediante la contraseña de administrador
+     *
+     * @param context
+     * @param passAdmin
+     */
+    @Override
+    public void validarPasswordTecnicoWeb(Context context, String passAdmin) {
+        if (registerConfigurationScreenView != null) {
+            registerConfigurationScreenInteractor.validarPasswordTecnicoWeb(context, passAdmin);
+        }
+    }
+
+    /**
+     * Metodo encargado de validar la existencia de una terminal
+     *
+     * @param context
+     * @param configurations
+     */
+    @Override
+    public void validarTerminal(Context context, Configurations configurations) {
+        if (registerConfigurationScreenView != null) {
+            registerConfigurationScreenInteractor.validarTerminal(context, configurations);
         }
     }
 
@@ -79,11 +106,15 @@ public class RegisterConfigurationScreenPresenterImpl implements RegisterConfigu
      * Registra los parametros de conexion del dispositivo
      *
      * @param context
-     * @param configurations
+     * @param establecimiento
      */
     @Override
-    public void registrarConfiguracionConexion(Context context, Configurations configurations) {
-        registerConfigurationScreenInteractor.registrarConfiguracionConexion(context, configurations);
+    public void setAsignaID(Context context, Establecimiento establecimiento) {
+        if (registerConfigurationScreenView != null) {
+            this.establecimiento = establecimiento;
+            this.establecimiento.setContext(context);
+            registerConfigurationScreenInteractor.setAsignaID(context, establecimiento);
+        }
     }
 
     /**
@@ -134,6 +165,27 @@ public class RegisterConfigurationScreenPresenterImpl implements RegisterConfigu
             case RegisterConfigurationScreenEvent.onProccessInformacionEstablecimientoError:
                 onProccessInformacionEstablecimientoError();
                 break;
+
+            case RegisterConfigurationScreenEvent.onVerifyTerminalSuccess:
+                onVerifyTerminalSuccess(registerConfigurationScreenEvent.getEstablecimiento());
+                break;
+
+            case RegisterConfigurationScreenEvent.onVerifyTerminalError:
+                onVerifyTerminalError(registerConfigurationScreenEvent.getErrorMessage());
+                break;
+
+            case RegisterConfigurationScreenEvent.onAsignaIDSuccess:
+                registerConexionEstablecimineto();
+                break;
+
+            case RegisterConfigurationScreenEvent.onAsignaIDError:
+                onAsignaIDError(registerConfigurationScreenEvent.getErrorMessage());
+                break;
+
+            case RegisterConfigurationScreenEvent.onVerifyConsumoWSError:
+                onInformacionDispositivoErrorConexion();
+                break;
+
         }
     }
 
@@ -143,6 +195,11 @@ public class RegisterConfigurationScreenPresenterImpl implements RegisterConfigu
      * Metodo propios de la clase
      * #############################################################################################
      */
+
+
+    private void registerConexionEstablecimineto(){
+        registerConfigurationScreenInteractor.registerConexionEstablecimineto(establecimiento);
+    }
 
     /**
      * Metodo para manejar el password tecnico valido
@@ -231,6 +288,26 @@ public class RegisterConfigurationScreenPresenterImpl implements RegisterConfigu
     private void onProccessInformacionEstablecimientoError() {
         if (registerConfigurationScreenView != null) {
             registerConfigurationScreenView.handleProccessInformacionEstablecimientoError();
+        }
+    }
+
+    /**
+     * Metodo para manejar el registro de la informacion del dispositivo erronea
+     */
+    private void onVerifyTerminalSuccess(Establecimiento establecimiento) {
+        if (registerConfigurationScreenView != null) {
+            registerConfigurationScreenView.handleVerifyTerminalSuccess(establecimiento);
+        }
+    }
+
+    private void onVerifyTerminalError(String error){
+        if (registerConfigurationScreenView != null) {
+            registerConfigurationScreenView.handleVerifyTerminalError(error);
+        }
+    }
+    private void onAsignaIDError(String error){
+        if (registerConfigurationScreenView != null) {
+            registerConfigurationScreenView.handleVerifyTerminalError(error);
         }
     }
 

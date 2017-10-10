@@ -146,6 +146,7 @@ public class ConfigurationScreenActivity extends Activity {
                 Bundle args = new Bundle();
 
                 args.putInt(Configurations.keyConfiguration, Configurations.configuracionRegistrar);
+                args.putInt(Configurations.keyPasoClaveTecnico, Configurations.configuracionConClaveWeb);
 
                 Intent intent = new Intent(ConfigurationScreenActivity.this, RegisterConfigurationScreenActivity_.class);
                 //Agregadas banderas para no retorno

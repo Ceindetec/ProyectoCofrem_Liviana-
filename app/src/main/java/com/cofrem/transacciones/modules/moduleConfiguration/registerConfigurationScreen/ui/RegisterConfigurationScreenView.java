@@ -1,5 +1,7 @@
 package com.cofrem.transacciones.modules.moduleConfiguration.registerConfigurationScreen.ui;
 
+import com.cofrem.transacciones.models.modelsWS.modelEstablecimiento.Establecimiento;
+
 public interface RegisterConfigurationScreenView {
 
     /**
@@ -51,5 +53,15 @@ public interface RegisterConfigurationScreenView {
      * Metodo para manejar el registro de la informacion del dispositivo erronea
      */
     void handleProccessInformacionEstablecimientoError();
+
+    /**
+     * Metodo para manejar la verificacion de una terminal correcta
+     */
+    void handleVerifyTerminalSuccess(Establecimiento establecimiento);
+
+    /**
+     * Metodo para manejar la verificacion de una terminal correcta
+     */
+    void handleVerifyTerminalError(String MessageError);
 
 }

@@ -1,5 +1,7 @@
 package com.cofrem.transacciones.models.modelsWS.modelEstablecimiento;
 
+import com.google.gson.JsonObject;
+
 import org.ksoap2.serialization.SoapObject;
 
 public class ConexionEstablecimiento {
@@ -8,7 +10,7 @@ public class ConexionEstablecimiento {
     //Modelo usado en la respuesta del WS para la respuesta terminalResult
 
     //Modelado rapido de llaves del terminalResulta
-    public static final String CODIGO_TERMINAL_KEY = "codigoTerminal";
+    public static final String CODIGO_TERMINAL_KEY = "codigo_terminal";
     public static final String UUID_KEY = "uuid";
     public static final String NOMBRE_TERMINAL_KEY = "nombreTerminal";
     public static final String IP_PRINCIPAL_KEY = "ip1";
@@ -53,6 +55,22 @@ public class ConexionEstablecimiento {
         this.claveComercio = soap.getPropertyAsString(CLAVE_COMERCIO_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(CLAVE_COMERCIO_KEY);
 
         this.mac = soap.getPropertyAsString(MAC_KEY).equals("anyType{}") ? "" : soap.getPropertyAsString(MAC_KEY);
+
+    }
+
+    public ConexionEstablecimiento(JsonObject data){
+        this.codigoTerminal = data.get(CODIGO_TERMINAL_KEY).getAsString();
+
+//        this.uuid = data.get(UUID_KEY).getAsString();
+
+//        this.nombreTerminal = data.get(NOMBRE_TERMINAL_KEY).getAsString();
+
+        this.ip1 = data.get(IP_PRINCIPAL_KEY).getAsString();
+
+//        this.ip2 = data.get(IP_SECUNDARIA_KEY).getAsString();
+
+
+//        this.mac = data.get(MAC_KEY).getAsString();
 
     }
 

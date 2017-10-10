@@ -1,10 +1,15 @@
 package com.cofrem.transacciones.modules.moduleConfiguration.testCommunicationScreen;
 
 import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.telephony.TelephonyManager;
 
 import com.cofrem.transacciones.database.AppDatabase;
+import com.cofrem.transacciones.global.InfoGlobalTransaccionREST;
 import com.cofrem.transacciones.global.InfoGlobalTransaccionSOAP;
 import com.cofrem.transacciones.lib.KsoapAsync;
+import com.cofrem.transacciones.lib.VolleyTransaction;
 import com.cofrem.transacciones.models.modelsWS.MessageWS;
 import com.cofrem.transacciones.models.modelsWS.TransactionWS;
 import com.cofrem.transacciones.models.modelsWS.modelTransaccion.InformacionSaldo;
@@ -12,7 +17,11 @@ import com.cofrem.transacciones.models.modelsWS.modelTransaccion.ResultadoTransa
 import com.cofrem.transacciones.modules.moduleConfiguration.testCommunicationScreen.events.TestCommunicationScreenEvent;
 import com.cofrem.transacciones.lib.EventBus;
 import com.cofrem.transacciones.lib.GreenRobotEventBus;
+import com.google.gson.JsonObject;
+
 import org.ksoap2.serialization.SoapObject;
+
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class TestCommunicationScreenRepositoryImpl implements TestCommunicationScreenRepository {
@@ -40,29 +49,61 @@ public class TestCommunicationScreenRepositoryImpl implements TestCommunicationS
     @Override
     public void testComunication(Context context) {
 
-        ResultadoTransaccion resultadoTransaccion = registrarTransaccionConsumoWS(context);
+        final HashMap<String, String> parameters = new HashMap<>();
 
-        //Registra mediante el WS la transaccion
-        if (resultadoTransaccion != null) {
+        String codigo = AppDatabase.getInstance(context).obtenerCodigoTerminal();
 
-            MessageWS messageWS = resultadoTransaccion.getMessageWS();
+        parameters.put("codigo", codigo);
 
-            if (messageWS.getCodigoMensaje() == MessageWS.statusConsultaExitosa) {
+        VolleyTransaction volleyTransaction = new VolleyTransaction();
 
-//                postEvent(SaldoScreenEvent.onTransaccionSuccess, resultadoTransaccion.getInformacionSaldo());
-                postEvent(TestCommunicationScreenEvent.onTestComunicationSuccess);
 
-                //Imprime el recibo
-                //imprimirRecibo(context);
+        volleyTransaction.getData(context,
+                parameters,
+                InfoGlobalTransaccionREST.HTTP +
+                        AppDatabase.getInstance(context).obtenerURLConfiguracionConexion() +
+                        InfoGlobalTransaccionREST.WEB_SERVICE_URI +
+                InfoGlobalTransaccionREST.METHODO_COMUNICACION,
+                new VolleyTransaction.VolleyCallback() {
+                    @Override
+                    public void onSuccess(JsonObject data) {
 
-            } else {
-                //Error en el registro de la transaccion del web service
-                postEvent(TestCommunicationScreenEvent.onTestComunicationError, messageWS.getDetalleMensaje());
-            }
-        } else {
-            //Error en la conexion con el Web Service
-            postEvent(TestCommunicationScreenEvent.onTransaccionWSConexionError);
-        }
+                        if(data.get("estado").getAsBoolean()){
+                            postEvent(TestCommunicationScreenEvent.onTestComunicationSuccess);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+
+        });
+
+
+//        ResultadoTransaccion resultadoTransaccion = registrarTransaccionConsumoWS(context);
+//
+//        //Registra mediante el WS la transaccion
+//        if (resultadoTransaccion != null) {
+//
+//            MessageWS messageWS = resultadoTransaccion.getMessageWS();
+//
+//            if (messageWS.getCodigoMensaje() == MessageWS.statusConsultaExitosa) {
+//
+////                postEvent(SaldoScreenEvent.onTransaccionSuccess, resultadoTransaccion.getInformacionSaldo());
+//                postEvent(TestCommunicationScreenEvent.onTestComunicationSuccess);
+//
+//                //Imprime el recibo
+//                //imprimirRecibo(context);
+//
+//            } else {
+//                //Error en el registro de la transaccion del web service
+//                postEvent(TestCommunicationScreenEvent.onTestComunicationError, messageWS.getDetalleMensaje());
+//            }
+//        } else {
+//            //Error en la conexion con el Web Service
+//            postEvent(TestCommunicationScreenEvent.onTransaccionWSConexionError);
+//        }
 
     }
 
