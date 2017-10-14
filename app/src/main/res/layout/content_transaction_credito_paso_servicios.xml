@@ -30,7 +30,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp"
         android:layout_above="@+id/btnCreditoTransactionServiciosBotonCancelar" />
-    
+
     <Button
         android:id="@+id/btnCreditoTransactionServiciosBotonCancelar"
         style="@style/StyleButtonCancel"

@@ -9,11 +9,19 @@
 
     <string name="transaction_text_button_saldo">Saldo</string>
 
+    <string name="transaction_text_button_cambio_clave">Cambiar Clave a Tarjetas</string>
+
     <string name="transaction_text_button_anulacion">Anulación</string>
 
     <!-- Titulos de vistas -->
 
     <string name="transaction_text_title_credito">Consumo</string>
+
+    <string name="transaction_text_title_cambio_clave">Cambio de Clave</string>
+
+    <string name="transaction_text_title_error">ERROR</string>
+
+    <string name="transaction_text_title_success">PERFECTO</string>
 
     <string name="transaction_text_title_saldo">Consulta de Saldo</string>
 
@@ -28,6 +36,8 @@
     <string name="transaction_text_exitosa">TRANSACCIÓN EXITOSA</string>
 
     <string name="transaction_text_erronea">TRANSACCIÓN ERRONEA</string>
+
+    <string name="transaction_text_nueva_pass_guardada">Nueva Contraseña registrada</string>
 
     <string name="transaction_text_printer_error">No se pudo realizar la impresión del recibo</string>
 
@@ -68,6 +78,7 @@
     <string name="transaction_error_format_clave_usuario">La contraseña debe tener 4 caracteres</string>
 
     <string name="transaction_error_format_clave_administrador">La contraseña de administración debe tener 4 caracteres</string>
+    <string name="transaction_error_clave_no_coincide">Las contraseñas NO coinciden</string>
 
     <string name="transaction_error_format_numero_cargo">El número de cargo ingresado no es válido</string>
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.cofrem.transacciones.global.InfoGlobalSettingsBlockButtons;
 import com.cofrem.transacciones.models.InfoHeaderApp;
 import com.cofrem.transacciones.modules.moduleTransaction.anulacionScreen.ui.AnulacionScreenActivity_;
+import com.cofrem.transacciones.modules.moduleTransaction.cambioClaveScreen.ui.CambioClaveScreenActivity_;
 import com.cofrem.transacciones.modules.moduleTransaction.creditoScreen.ui.CreditoScreenActivity_;
 import com.cofrem.transacciones.modules.moduleTransaction.saldoScreen.ui.SaldoScreenActivity_;
 
@@ -171,4 +172,12 @@ public class TransactionScreenActivity extends Activity {
         startActivity(intent);
     }
 
+    /**
+     * Metodo para navegar a la ventana Cambio de Clave
+     */
+    @Click(R.id.btnTransactionScreenModuleCambioClave)
+    public void navigateToCambioClaveScreen() {
+        Intent intent = new Intent(this, CambioClaveScreenActivity_.class);
+        startActivity(intent);
+    }
 }

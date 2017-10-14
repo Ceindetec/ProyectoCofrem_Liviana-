@@ -37,11 +37,18 @@
         android:drawableStart="@drawable/if_money"
         android:paddingTop="@dimen/appPaddingTop"
         android:text="@string/transaction_text_button_saldo" />
+    <Button
+        android:id="@+id/btnTransactionScreenModuleCambioClave"
+        style="@style/StyleButtonStandar"
+        android:layout_below="@id/btnTransactionScreenModuleSaldo"
+        android:drawableStart="@drawable/if_edit"
+        android:paddingTop="@dimen/appPaddingTop"
+        android:text="@string/transaction_text_button_cambio_clave" />
 
     <Button
         android:id="@+id/btnTransactionScreenBack"
         style="@style/StyleButtonBack"
-        android:layout_below="@id/btnTransactionScreenModuleSaldo"
+        android:layout_below="@id/btnTransactionScreenModuleCambioClave"
         android:paddingTop="@dimen/appPaddingTop"
         android:text="@string/general_text_button_regresar" />
 </RelativeLayout>

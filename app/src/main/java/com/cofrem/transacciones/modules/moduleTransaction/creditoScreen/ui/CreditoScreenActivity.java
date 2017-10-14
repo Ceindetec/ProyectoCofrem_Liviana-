@@ -78,6 +78,8 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
     @ViewById
     RelativeLayout bodyContentCreditoTransaccionErronea;
     @ViewById
+    RelativeLayout bodyContentCreditoSelectServicio;
+    @ViewById
     FrameLayout frlPgbHldTransactionCredito;
 
     //Paso transaction_credito_paso_valor_compra
@@ -117,8 +119,9 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
     final static int PASO_NUMERO_DOCUMENTO = 1;
     final static int PASO_VERIFICACION_VALOR = 2;
     final static int PASO_DESLICE_TARJETA = 3;
-    final static int PASO_CLAVE_USUARIO = 4;
-    final static int PASO_TRANSACCION_EXITOSA = 5;
+    final static int PASO_SELECT_SERVICIOS = 4;
+    final static int PASO_CLAVE_USUARIO = 5;
+    final static int PASO_TRANSACCION_EXITOSA = 6;
 
     /**
      * #############################################################################################
@@ -443,10 +446,12 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
         bodyContentCreditoNumeroDocumento.setVisibility(View.GONE);
         bodyContentCreditoVerificacionValor.setVisibility(View.GONE);
         bodyContentCreditoDesliceTarjeta.setVisibility(View.GONE);
+        bodyContentCreditoSelectServicio.setVisibility(View.GONE);
         bodyContentCreditoLecturaIncorrecta.setVisibility(View.GONE);
         bodyContentCreditoPassUsuario.setVisibility(View.GONE);
         bodyContentCreditoTransaccionExitosa.setVisibility(View.GONE);
         bodyContentCreditoTransaccionErronea.setVisibility(View.GONE);
+
     }
 
     /**
@@ -582,7 +587,7 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
             bodyContentCreditoNumeroDocumento.setVisibility(View.VISIBLE);
 
             //Actualiza el paso actual
-            pasoTransaccion++;
+            pasoTransaccion = PASO_NUMERO_DOCUMENTO;
 
         } else if (valorCompra.length() == 0) {
 
@@ -648,7 +653,7 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
             bodyContentCreditoVerificacionValor.setVisibility(View.VISIBLE);
 
             //Actualiza el paso actual
-            pasoTransaccion++;
+            pasoTransaccion = PASO_VERIFICACION_VALOR;
 
         } else {
 
@@ -672,7 +677,7 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
         bodyContentCreditoDesliceTarjeta.setVisibility(View.VISIBLE);
 
         //Actualiza el paso actual
-        pasoTransaccion++;
+        pasoTransaccion = PASO_DESLICE_TARJETA;
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -745,10 +750,10 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
         bodyContentCreditoDesliceTarjeta.setVisibility(View.GONE);
 
         //Muestra la vista de contraseña de usuario
-        bodyContentCreditoPassUsuario.setVisibility(View.VISIBLE);
+        bodyContentCreditoSelectServicio.setVisibility(View.VISIBLE);
 
         //Actualiza el paso actual
-        pasoTransaccion++;
+        pasoTransaccion = PASO_SELECT_SERVICIOS;
     }
 
     /**

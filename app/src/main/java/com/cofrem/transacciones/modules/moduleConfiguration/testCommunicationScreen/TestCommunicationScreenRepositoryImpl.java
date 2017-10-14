@@ -51,9 +51,7 @@ public class TestCommunicationScreenRepositoryImpl implements TestCommunicationS
 
         final HashMap<String, String> parameters = new HashMap<>();
 
-        String codigo = AppDatabase.getInstance(context).obtenerCodigoTerminal();
-
-        parameters.put("codigo", codigo);
+        parameters.put("codigo", "02");
 
         VolleyTransaction volleyTransaction = new VolleyTransaction();
 
@@ -70,12 +68,14 @@ public class TestCommunicationScreenRepositoryImpl implements TestCommunicationS
 
                         if(data.get("estado").getAsBoolean()){
                             postEvent(TestCommunicationScreenEvent.onTestComunicationSuccess);
+                        }else{
+                            postEvent(TestCommunicationScreenEvent.onTestComunicationError,data.get("mensaje").getAsString());
                         }
                     }
 
                     @Override
                     public void onError(String errorMessage) {
-
+                        postEvent(TestCommunicationScreenEvent.onTransaccionWSConexionError,errorMessage);
                     }
 
         });
@@ -102,7 +102,7 @@ public class TestCommunicationScreenRepositoryImpl implements TestCommunicationS
 //            }
 //        } else {
 //            //Error en la conexion con el Web Service
-//            postEvent(TestCommunicationScreenEvent.onTransaccionWSConexionError);
+//            postEvent(TestCommunicationScreenEvent.onTransaccionConError);
 //        }
 
     }
@@ -134,85 +134,85 @@ public class TestCommunicationScreenRepositoryImpl implements TestCommunicationS
      * @param context     contexto desde la cual se realiza la transaccion
      * @return regreso del resultado de la transaccion
      */
-    private ResultadoTransaccion registrarTransaccionConsumoWS(Context context) {
-
-        //Se crea una variable de estado de la transaccion
-        ResultadoTransaccion resultadoTransaccion = null;
-
-        //Inicializacion y declaracion de parametros para la peticion web service
-        String[][] params = {
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_SALDO_CODIGO_TERMINAL, AppDatabase.getInstance(context).obtenerCodigoTerminal()}
-        };
-
-        //Creacion del modelo TransactionWS para ser usado dentro del webservice
-        TransactionWS transactionWS = new TransactionWS(
-                InfoGlobalTransaccionSOAP.HTTP + AppDatabase.getInstance(context).obtenerURLConfiguracionConexion() + InfoGlobalTransaccionSOAP.WEB_SERVICE_URI,
-                InfoGlobalTransaccionSOAP.HTTP + InfoGlobalTransaccionSOAP.NAME_SPACE,
-                InfoGlobalTransaccionSOAP.METHOD_NAME_TEST,
-                params);
-
-        //Inicializacion del objeto que sera devuelto por la transaccion del webservice
-        SoapObject soapTransaction = null;
-
-        try {
-
-            //Transaccion solicitada al web service
-            soapTransaction = new KsoapAsync(new KsoapAsync.ResponseKsoapAsync() {
-
-                /**
-                 * Metodo sobrecargado que maneja el callback de los datos
-                 *
-                 * @param soapResponse
-                 * @return
-                 */
-                @Override
-                public SoapObject processFinish(SoapObject soapResponse) {
-                    return soapResponse;
-                }
-
-            }).execute(transactionWS).get();
-
-        } catch (InterruptedException | ExecutionException e) {
-
-            e.printStackTrace();
-
-        }
-
-        //Si la transaccion no genero resultado regresa un establecimiento vacio
-        if (soapTransaction != null) {
-
-            //Inicializacion del modelo MessageWS
-            MessageWS messageWS = new MessageWS(
-                    (SoapObject) soapTransaction.getProperty(MessageWS.PROPERTY_MESSAGE)
-            );
-
-            switch (messageWS.getCodigoMensaje()) {
-
-                //Transaccion exitosa
-                case MessageWS.statusTransaccionExitosa:
-
-                    InformacionSaldo informacionSaldo = new InformacionSaldo(
-                            (SoapObject) soapTransaction.getProperty(InformacionSaldo.PROPERTY_SALDO_RESULT)
-                    );
-
-                    resultadoTransaccion = new ResultadoTransaccion(
-                            informacionSaldo,
-                            messageWS
-                    );
-                    break;
-
-                default:
-                    resultadoTransaccion = new ResultadoTransaccion(
-                            messageWS
-                    );
-                    break;
-            }
-
-        }
-
-        //Retorno de estado de transaccion
-        return resultadoTransaccion;
-    }
+//    private ResultadoTransaccion registrarTransaccionConsumoWS(Context context) {
+//
+//        //Se crea una variable de estado de la transaccion
+//        ResultadoTransaccion resultadoTransaccion = null;
+//
+//        //Inicializacion y declaracion de parametros para la peticion web service
+//        String[][] params = {
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_SALDO_CODIGO_TERMINAL, AppDatabase.getInstance(context).obtenerCodigoTerminal()}
+//        };
+//
+//        //Creacion del modelo TransactionWS para ser usado dentro del webservice
+//        TransactionWS transactionWS = new TransactionWS(
+//                InfoGlobalTransaccionSOAP.HTTP + AppDatabase.getInstance(context).obtenerURLConfiguracionConexion() + InfoGlobalTransaccionSOAP.WEB_SERVICE_URI,
+//                InfoGlobalTransaccionSOAP.HTTP + InfoGlobalTransaccionSOAP.NAME_SPACE,
+//                InfoGlobalTransaccionSOAP.METHOD_NAME_TEST,
+//                params);
+//
+//        //Inicializacion del objeto que sera devuelto por la transaccion del webservice
+//        SoapObject soapTransaction = null;
+//
+//        try {
+//
+//            //Transaccion solicitada al web service
+//            soapTransaction = new KsoapAsync(new KsoapAsync.ResponseKsoapAsync() {
+//
+//                /**
+//                 * Metodo sobrecargado que maneja el callback de los datos
+//                 *
+//                 * @param soapResponse
+//                 * @return
+//                 */
+//                @Override
+//                public SoapObject processFinish(SoapObject soapResponse) {
+//                    return soapResponse;
+//                }
+//
+//            }).execute(transactionWS).get();
+//
+//        } catch (InterruptedException | ExecutionException e) {
+//
+//            e.printStackTrace();
+//
+//        }
+//
+//        //Si la transaccion no genero resultado regresa un establecimiento vacio
+//        if (soapTransaction != null) {
+//
+//            //Inicializacion del modelo MessageWS
+//            MessageWS messageWS = new MessageWS(
+//                    (SoapObject) soapTransaction.getProperty(MessageWS.PROPERTY_MESSAGE)
+//            );
+//
+//            switch (messageWS.getCodigoMensaje()) {
+//
+//                //Transaccion exitosa
+//                case MessageWS.statusTransaccionExitosa:
+//
+//                    InformacionSaldo informacionSaldo = new InformacionSaldo(
+//                            (SoapObject) soapTransaction.getProperty(InformacionSaldo.PROPERTY_SALDO_RESULT)
+//                    );
+//
+//                    resultadoTransaccion = new ResultadoTransaccion(
+//                            informacionSaldo,
+//                            messageWS
+//                    );
+//                    break;
+//
+//                default:
+//                    resultadoTransaccion = new ResultadoTransaccion(
+//                            messageWS
+//                    );
+//                    break;
+//            }
+//
+//        }
+//
+//        //Retorno de estado de transaccion
+//        return resultadoTransaccion;
+//    }
 
 
     /**

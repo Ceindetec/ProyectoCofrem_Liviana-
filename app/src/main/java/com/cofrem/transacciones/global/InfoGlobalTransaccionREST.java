@@ -2,16 +2,15 @@ package com.cofrem.transacciones.global;
 
 public class InfoGlobalTransaccionREST {
 
-//    public final static String URL_BASE = "http://192.168.1.52/WebCofrem/public/api";
-
     public final static String HTTP = "http://";
-    public final static String URL_BASE = "192.168.0.20";
-    public final static String WEB_SERVICE_URI = "/WebCofrem/public/api/";
+    public final static String WEB_SERVICE_URI = "/webcofrem/public/api/";
     public final static String FEED_KEY = "statusTransaction";
 
     // PARAM_URL de InfoGlobalTransaccionREST
     public final static String METHODO_COMUNICACION = "comunicacion";
     public final static String METHODO_TERMINAL = "terminal";
+    public final static String METHODO_CONSULTAR_CLAVE_TARJETA = "consultarclavetarjeta";
+    public final static String METHODO_ACTUALIZAR_CLAVE_TARJETA = "actulizarclavetarjeta";
     public final static String METHODO_CLAVE_SUCURSAL = "clavesucursal";
     public final static String METHODO_CLAVE_TERMINAL = "claveterminal";
     public final static String METHODO_ASIGNAID = "asignaID";
