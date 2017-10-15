@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/frlPgbHldTransactionCredito"
+        android:id="@+id/frlPgbHldTransactionCambioClave"
         style="@style/StyleProgressbarHolder"
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/pgbTransactionCredito"
+            android:id="@+id/pgbTransactionCambioClave"
             style="@style/StyleProgressbar" />
     </FrameLayout>
 
@@ -20,75 +20,59 @@
         layout="@layout/content_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/appMarginBottom" />
+        android:layout_margin="@dimen/appMarginBottom" />
 
     <include
-        android:id="@+id/bodyContentCreditoValorCompra"
-        layout="@layout/content_transaction_credito_paso_valor_compra"
+        android:id="@+id/bodyContentCambioClaveNumeroDocumento"
+        layout="@layout/content_transaction_cambiar_clave_paso_numero_documento"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerContent"
+        android:visibility="visible" />
+
+    <include
+        android:id="@+id/bodyContentCambioClaveDesliceTarjeta"
+        layout="@layout/content_transaction_cambiar_clave_paso_deslice_tarjeta"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerContent"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/bodyContentCreditoNumeroDocumento"
-        layout="@layout/content_transaction_credito_paso_numero_documento"
+        android:id="@+id/bodyContentCambioClaveDesliceTarjetaIncorrecta"
+        layout="@layout/content_transaction_cambiar_clave_paso_lectura_incorrecta"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerContent"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/bodyContentCreditoVerificacionValor"
-        layout="@layout/content_transaction_credito_paso_verificacion_valor"
+        android:id="@+id/bodyContentCambioClavePassActual"
+        layout="@layout/content_transaction_cambiar_clave_paso_pass_actual"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerContent"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/bodyContentCreditoDesliceTarjeta"
-        layout="@layout/content_transaction_credito_paso_deslice_tarjeta"
+        android:id="@+id/bodyContentCambioClavePassNueva"
+        layout="@layout/content_transaction_cambiar_clave_paso_pass_nuevo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerContent"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/bodyContentCreditoSelectServicio"
-        layout="@layout/content_transaction_credito_paso_servicios"
+        android:id="@+id/bodyContentCambioClaveErrorTarjeta"
+        layout="@layout/content_transaction_cambiar_clave_paso_error_en_tarjeta"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerContent"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/bodyContentCreditoLecturaIncorrecta"
-        layout="@layout/content_transaction_credito_paso_lectura_incorrecta"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/headerContent"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/bodyContentCreditoPassUsuario"
-        layout="@layout/content_transaction_credito_paso_pass_usuario"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/headerContent"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/bodyContentCreditoTransaccionExitosa"
-        layout="@layout/content_transaction_credito_paso_transaccion_exitosa"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/headerContent"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/bodyContentCreditoTransaccionErronea"
-        layout="@layout/content_transaction_credito_paso_transaccion_error"
+        android:id="@+id/bodyContentCambioClaveSuccessTarjeta"
+        layout="@layout/content_transaction_cambiar_clave_paso_cambio_exitoso"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerContent"

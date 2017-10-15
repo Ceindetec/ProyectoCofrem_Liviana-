@@ -70,6 +70,11 @@
             android:name=".modules.moduleTransaction.anulacionScreen.ui.AnulacionScreenActivity_"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- Transaction Screen / Module Cambio de Calve -->
+        <activity
+            android:name=".modules.moduleTransaction.cambioClaveScreen.ui.CambioClaveScreenActivity_"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!-- Report Screen -->
         <activity
             android:name=".ReportScreenActivity_"

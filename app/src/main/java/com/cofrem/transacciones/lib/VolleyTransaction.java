@@ -95,6 +95,7 @@ public class VolleyTransaction {
      */
     public void getData(Context context,
                         String moduleTransaccion,
+                        String URLTransaccion,
                         final VolleyCallback callback) {
 
         // Añadir petición GSON a la cola
@@ -107,7 +108,7 @@ public class VolleyTransaction {
                         Request.Method.GET,
 
                         //@param PARAM_URL
-                        InfoGlobalTransaccionREST.URL_BASE + "/" + moduleTransaccion,
+                        URLTransaccion,
 
                         //@param Class<T> clazz Clase o modelo en el que se formatean los datos
                         JsonObject.class,

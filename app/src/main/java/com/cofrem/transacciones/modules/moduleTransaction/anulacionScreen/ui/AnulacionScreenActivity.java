@@ -203,7 +203,6 @@ public class AnulacionScreenActivity extends Activity implements AnulacionScreen
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         /*
           Keycodes disponibles
-
           4: Back
           66: Enter
           67: Delete
