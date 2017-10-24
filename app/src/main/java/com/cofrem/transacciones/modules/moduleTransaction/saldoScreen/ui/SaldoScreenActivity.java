@@ -661,7 +661,7 @@ public class SaldoScreenActivity extends Activity implements SaldoScreenView {
 
             //TODO: agregar los diferentes tipos de productos
             //Se registra el tipo de producto en el modelo
-            modelTransaccion.setTipo_servicio(Transaccion.CODIGO_PRODUCTO_CUPO_ROTATIVO);
+//            modelTransaccion.setTipo_servicio(Transaccion.CODIGO_PRODUCTO_CUPO_ROTATIVO);
 
             //Actualiza el paso actual
             pasoTransaccion++;

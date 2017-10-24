@@ -43,7 +43,7 @@ public class Transaccion {
     /**
      * ## TABLA ENTREGADA POR COFREM ########
      * ## Version 2017/07/27 ################
-     * Valores posibles que puede tomar el atributo tipo_servicio
+     * Valores posibles que puede tomar el atributo servicios
      * 01	CUPO ROTATIVO
      * 02	BONO DE BIENESTAR
      * 03	TARJETA REGALO
@@ -63,14 +63,14 @@ public class Transaccion {
      * Modelo para el registro del Establishment
      */
     private int id;
-    private String numero_cargo;
+    private String numero_transaccion;
 
     private String numero_documento;
     private int clave;
     private String numero_tarjeta;
 
     //Array de servicios
-    private int tipo_servicio;
+    private String servicios;
     private int valor;
 
     private int tipo_encriptacion;
@@ -88,27 +88,27 @@ public class Transaccion {
      * Constructor vacio de la clase
      */
     public Transaccion() {
-
+        servicios = "";
     }
 
     public Transaccion(
             int id,
-            String numero_cargo,
+            String numero_transaccion,
             String numero_documento,
             int clave,
             String numero_tarjeta,
-            int tipo_servicio,
+            String servicios,
             int valor,
             int tipo_encriptacion,
             int tipo_transaccion,
             String registro,
             int estado) {
         this.id = id;
-        this.numero_cargo = numero_cargo;
+        this.numero_transaccion = numero_transaccion;
         this.numero_documento = numero_documento;
         this.clave = clave;
         this.numero_tarjeta = numero_tarjeta;
-        this.tipo_servicio = tipo_servicio;
+        this.servicios = servicios;
         this.valor = valor;
         this.tipo_encriptacion = tipo_encriptacion;
         this.tipo_transaccion = tipo_transaccion;
@@ -124,12 +124,12 @@ public class Transaccion {
         this.id = id;
     }
 
-    public String getNumero_cargo() {
-        return numero_cargo;
+    public String getNumero_transaccion() {
+        return numero_transaccion;
     }
 
-    public void setNumero_cargo(String numero_cargo) {
-        this.numero_cargo = numero_cargo;
+    public void setNumero_transaccion(String numero_transaccion) {
+        this.numero_transaccion = numero_transaccion;
     }
 
     public String getNumero_documento() {
@@ -156,12 +156,19 @@ public class Transaccion {
         this.numero_tarjeta = numero_tarjeta;
     }
 
-    public int getTipo_servicio() {
-        return tipo_servicio;
+    public String getServicios() {
+        return servicios;
     }
 
-    public void setTipo_servicio(int tipo_servicio) {
-        this.tipo_servicio = tipo_servicio;
+    public void setServicios(String servicios) {
+        this.servicios = servicios;
+    }
+
+    public void addServicio(String servicios) {
+        if(this.servicios.equals(""))
+            this.servicios = this.servicios + servicios;
+        else
+            this.servicios = this.servicios + "," + servicios;
     }
 
     public int getValor() {
@@ -228,7 +235,7 @@ public class Transaccion {
         this.hora_server = hora_server;
     }
 
-    public  String getFullFechaServer(){
-        return  fecha_server + " " + hora_server;
+    public String getFullFechaServer() {
+        return fecha_server + " " + hora_server;
     }
 }

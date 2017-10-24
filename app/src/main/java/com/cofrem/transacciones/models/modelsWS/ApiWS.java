@@ -14,6 +14,7 @@ public class ApiWS {
     public final static int CODIGO_DOCUMENTIO_INCORRECTO = 5;
     public final static int CODIGO_PASSWORD_DEBE_SER_NUM = 6;
     public final static int CODIGO_ERROR_EJECUCION = 7;
-
+    public final static int CODIGO_TERMINAL_INACTIVA = 8;
+    public final static int CODIGO_TRANSACCION_INSUFICIENTE = 9;
 
 }

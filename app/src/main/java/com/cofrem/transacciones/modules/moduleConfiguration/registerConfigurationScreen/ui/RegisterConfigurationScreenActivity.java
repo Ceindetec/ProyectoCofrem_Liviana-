@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputFilter;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cofrem.transacciones.ConfigurationScreenActivity_;
+import com.cofrem.transacciones.global.InfoGlobalSettings;
 import com.cofrem.transacciones.global.InfoGlobalSettingsBlockButtons;
 import com.cofrem.transacciones.models.InfoHeaderApp;
 import com.cofrem.transacciones.models.modelsWS.modelEstablecimiento.Establecimiento;
@@ -74,8 +76,6 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
     @ViewById
     RelativeLayout bodyContentConfigurationHost;
     @ViewById
-    RelativeLayout bodyContentConfigurationPort;
-    @ViewById
     RelativeLayout bodyContentConfigurationDispositivo;
     @ViewById
     RelativeLayout bodyContentConfigurationExito;
@@ -93,12 +93,6 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
     Button btnConfiguracionRegisterBotonCancelar;
     @ViewById
     EditText edtConfiguracionRegisterHostContenidoValor;
-
-    //Paso configuracion_register_paso_pass_port
-    @ViewById
-    Button btnConfiguracionRegisterPortBotonCancelar;
-    @ViewById
-    EditText edtConfiguracionRegisterPortContenidoValor;
 
     //Paso configuracion_register_paso_pass_dispositivo
     @ViewById
@@ -250,7 +244,7 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
             case KEYCODE_ENTER:
 
                 //Ocula el soft keyboard al presionar la tecla enter
-                hideKeyBoard();
+//                hideKeyBoard();
 
                 switch (pasoRegisterConfiguration) {
 
@@ -264,11 +258,6 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
                         //Metodo para registrar el host de conexion
                         registrarHost();
                         break;
-
-//                    case PASO_PORT:
-//                        //Metodo para registrar el port de conexion
-//                        registrarPort();
-//                        break;
 
                     case PASO_DISPOSITIVO:
                         //Metodo para registrar el identificador del dispositivo
@@ -303,12 +292,6 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
                 //Vacia la caja del host de conexion
                 edtConfiguracionRegisterHostContenidoValor.setText("");
                 break;
-
-//            case PASO_PORT:
-//                //Vacia la caja del puerto de conexion
-//                edtConfiguracionRegisterHostContenidoValor.setText("");
-//
-//                break;
 
             case PASO_DISPOSITIVO:
                 //Vacia la caja del codigo de identificacion del dispositivo
@@ -624,7 +607,6 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
     private void inicializarOcultamientoVistas() {
 
         bodyContentConfigurationHost.setVisibility(View.GONE);
-        bodyContentConfigurationPort.setVisibility(View.GONE);
         bodyContentConfigurationDispositivo.setVisibility(View.GONE);
         bodyContentConfigurationExito.setVisibility(View.GONE);
         bodyContentConfiguration.setVisibility(View.GONE);
@@ -673,8 +655,13 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
     private void ocultarBotonesBack() {
         btnConfiguracionRegisterPassTecnicoBotonCancelar.setVisibility(View.GONE);
         btnConfiguracionRegisterBotonCancelar.setVisibility(View.GONE);
-        btnConfiguracionRegisterPortBotonCancelar.setVisibility(View.GONE);
         btnConfiguracionRegisterDispositivoBotonCancelar.setVisibility(View.GONE);
+    }
+
+    private void iniciarColorEditex(){
+        edtConfiguracionRegisterPassTecnicoContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT));
+        edtConfiguracionRegisterHostContenidoValor.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT));
+        edtConfiguracionRegisterDispositivoContenidoValor.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT));
     }
 
     /**
@@ -682,24 +669,38 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
      */
     @LongClick({R.id.edtConfiguracionRegisterPassTecnicoContenidoClave,
             R.id.edtConfiguracionRegisterHostContenidoValor,
-            R.id.edtConfiguracionRegisterPortContenidoValor,
-//            R.id.edtConfiguracionRegisterDispositivoContenidoValor,
+            R.id.edtConfiguracionRegisterDispositivoContenidoValor,
     })
     @Click({R.id.edtConfiguracionRegisterPassTecnicoContenidoClave,
             R.id.edtConfiguracionRegisterHostContenidoValor,
-            R.id.edtConfiguracionRegisterPortContenidoValor,
-//            R.id.edtConfiguracionRegisterDispositivoContenidoValor,
+            R.id.edtConfiguracionRegisterDispositivoContenidoValor,
     })
     @Touch({R.id.edtConfiguracionRegisterPassTecnicoContenidoClave,
             R.id.edtConfiguracionRegisterHostContenidoValor,
-            R.id.edtConfiguracionRegisterPortContenidoValor,
-//            R.id.edtConfiguracionRegisterDispositivoContenidoValor,
+            R.id.edtConfiguracionRegisterDispositivoContenidoValor,
     })
-    public void hideKeyBoard() {
+    public void hideKeyBoard(View v) {
 
         //TODO:VERIFICAR QUE EL TECLADO SE ESTA OCULTANDO
         //Oculta el teclado
         KeyBoard.hide(this);
+
+        iniciarColorEditex();
+
+        switch(v.getId()) {
+            case R.id.edtConfiguracionRegisterPassTecnicoContenidoClave:
+                edtConfiguracionRegisterPassTecnicoContenidoClave.requestFocus();
+                edtConfiguracionRegisterPassTecnicoContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT_COFUS));
+                break;
+            case  R.id.edtConfiguracionRegisterHostContenidoValor:
+                edtConfiguracionRegisterHostContenidoValor.requestFocus();
+                edtConfiguracionRegisterHostContenidoValor.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT_COFUS));
+                break;
+            case  R.id.edtConfiguracionRegisterDispositivoContenidoValor:
+                edtConfiguracionRegisterDispositivoContenidoValor.requestFocus();
+                edtConfiguracionRegisterDispositivoContenidoValor.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT_COFUS));
+                break;
+        }
 
     }
 
@@ -782,12 +783,6 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
             //Registra el valor del host en el modelo de la configuracion
             modelConfiguration.setHost(host);
 
-//            //Oculta la vista del Host de conexion
-//            bodyContentConfigurationHost.setVisibility(View.GONE);
-//
-//            //Muestra la vista del Port de conexion
-//            bodyContentConfigurationDispositivo.setVisibility(View.VISIBLE);
-//
 //            //Actualiza el paso actual
 //            pasoRegisterConfiguration = PASO_DISPOSITIVO;
 
@@ -843,48 +838,6 @@ public class RegisterConfigurationScreenActivity extends Activity implements Reg
                 registerConfigurationScreenPresenter.setAsignaID(RegisterConfigurationScreenActivity.this,establecimiento );
             }
         }, 100);
-
-    }
-
-    /**
-     * Metodo que registra la configuracion del port
-     */
-    @Click(R.id.btnConfiguracionRegisterPortBotonAceptar)
-    public void registrarPort() {
-
-        //Se obtiene el texto del puerto
-        String port = edtConfiguracionRegisterPortContenidoValor.getText().toString();
-
-        //Vacia la caja del valor del puerto
-        edtConfiguracionRegisterPortContenidoValor.setText("");
-
-        if ((port.length() > 0) && (port.length() < 6)) {
-            if ((Integer.parseInt(port) > 0) && (Integer.parseInt(port) < 65535)) {
-
-                //Registra el valor del port en el modelo de la configuracion
-                modelConfiguration.setPort(Integer.parseInt(port));
-
-                //Oculta la vista del Port de conexion
-                bodyContentConfigurationPort.setVisibility(View.GONE);
-
-                //Muestra la vista del codigo de dispositivo
-                bodyContentConfigurationDispositivo.setVisibility(View.VISIBLE);
-
-                //Actualiza el paso actual
-                pasoRegisterConfiguration++;
-
-            } else {
-
-                //Muestra el mensaje de error de formato del host
-                Toast.makeText(this, R.string.configuration_error_valor_puerto, Toast.LENGTH_SHORT).show();
-
-            }
-        } else {
-
-            //Muestra el mensaje de error de formato del host
-            Toast.makeText(this, R.string.configuration_error_format_puerto, Toast.LENGTH_SHORT).show();
-
-        }
 
     }
 

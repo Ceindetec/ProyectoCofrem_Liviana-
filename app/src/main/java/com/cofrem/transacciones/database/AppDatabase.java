@@ -317,8 +317,8 @@ public final class AppDatabase extends SQLiteOpenHelper {
 
         // Almacena los valores a insertar
         contentValues.put(
-                DatabaseManager.TableTransacciones.COLUMN_TRANSACCIONES_PRODUCTO_ID,
-                obtenerProductoIdByNombre(informacionTransaccion.getDetalleTipoServicio())
+                DatabaseManager.TableTransacciones.COLUMN_TRANSACCIONES_SERVICIOS,
+                informacionTransaccion.getDetalleServicio()
         );
 
         contentValues.put(
@@ -1140,7 +1140,7 @@ public final class AppDatabase extends SQLiteOpenHelper {
 
             Transaccion modelTransaccion = new Transaccion();
 
-            modelTransaccion.setNumero_cargo(cursorQuery.getString(0));
+            modelTransaccion.setNumero_transaccion(cursorQuery.getString(0));
             modelTransaccion.setNumero_documento(cursorQuery.getString(1));
             modelTransaccion.setValor(cursorQuery.getInt(2));
             modelTransaccion.setTipo_transaccion(cursorQuery.getInt(3));
@@ -1158,7 +1158,7 @@ public final class AppDatabase extends SQLiteOpenHelper {
     public void dropTransactions(String num) {
         getWritableDatabase().delete(
                 DatabaseManager.TableTransacciones.TABLE_NAME_TRANSACCIONES,
-                DatabaseManager.TableTransacciones.COLUMN_TRANSACCIONES_NUMERO_CARGO + " = '" + num +"'",
+                DatabaseManager.TableTransacciones.COLUMN_TRANSACCIONES_NUMERO_CARGO + " = '" + num + "'",
                 null
         );
     }
@@ -1255,8 +1255,8 @@ public final class AppDatabase extends SQLiteOpenHelper {
         Transaccion modelTransaccion = new Transaccion();
 
         modelTransaccion.setId(cursorQuery.getInt(0));
-        modelTransaccion.setTipo_servicio(cursorQuery.getInt(1));
-        modelTransaccion.setNumero_cargo(cursorQuery.getString(2));
+//        modelTransaccion.setTipo_servicio(cursorQuery.getInt(1));
+        modelTransaccion.setNumero_transaccion(cursorQuery.getString(2));
         modelTransaccion.setNumero_tarjeta(cursorQuery.getString(3));
         modelTransaccion.setValor(cursorQuery.getInt(4));
         modelTransaccion.setTipo_transaccion(cursorQuery.getInt(5));

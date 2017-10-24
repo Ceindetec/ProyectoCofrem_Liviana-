@@ -1,5 +1,9 @@
 package com.cofrem.transacciones.modules.moduleTransaction.creditoScreen.ui;
 
+import com.cofrem.transacciones.models.Servicio;
+
+import java.util.ArrayList;
+
 public interface CreditoScreenView {
 
     /**
@@ -33,4 +37,14 @@ public interface CreditoScreenView {
      * Metodo para manejar la orden de imprimir recibo con Error
      */
     void handleImprimirReciboError(String errorMessage);
+
+    void handleConsultarServiciosSuccess(ArrayList<Servicio> lista);
+
+    void handleTransaccionConError(String error);
+
+    void handleMostrarErrorEnVista (String error);
+
+    void handleCosumirServiciosError(String errorMessage);
+
+    void handleCosumirServiciosSuccess();
 }

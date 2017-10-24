@@ -156,10 +156,7 @@ public class CambioClaveScreenRepositoryImpl implements CambioClaveScreenReposit
                                 default:
                                     postEvent(CambioClaveScreenEvent.onTransaccionConError,data.get("mensaje").getAsString());
                             }
-
-
-
-                            postEvent(CambioClaveScreenEvent.onValidarPassActualizarError,data.get("mensaje").getAsString());
+//                            postEvent(CambioClaveScreenEvent.onValidarPassActualizarError,data.get("mensaje").getAsString());
                         }
                     }
 

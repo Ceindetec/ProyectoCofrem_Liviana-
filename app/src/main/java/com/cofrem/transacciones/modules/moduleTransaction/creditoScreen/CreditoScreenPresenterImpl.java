@@ -2,11 +2,15 @@ package com.cofrem.transacciones.modules.moduleTransaction.creditoScreen;
 
 import android.content.Context;
 
+import com.cofrem.transacciones.models.Servicio;
+import com.cofrem.transacciones.models.modelsWS.modelTransaccion.InformacionTransaccion;
 import com.cofrem.transacciones.modules.moduleTransaction.creditoScreen.events.CreditoScreenEvent;
 import com.cofrem.transacciones.modules.moduleTransaction.creditoScreen.ui.CreditoScreenView;
 import com.cofrem.transacciones.lib.EventBus;
 import com.cofrem.transacciones.lib.GreenRobotEventBus;
 import com.cofrem.transacciones.models.Transaccion;
+
+import java.util.ArrayList;
 
 public class CreditoScreenPresenterImpl implements CreditoScreenPresenter {
 
@@ -18,6 +22,9 @@ public class CreditoScreenPresenterImpl implements CreditoScreenPresenter {
      */
     //Declaracion del bus de eventos
     EventBus eventBus;
+
+    Context context; Transaccion transaccion;
+    int intentos;
 
     /**
      * #############################################################################################
@@ -62,6 +69,26 @@ public class CreditoScreenPresenterImpl implements CreditoScreenPresenter {
         eventBus.unregister(this);
     }
 
+    @Override
+    public void consultarServicios(Context context, Transaccion transaccion) {
+        if (creditoScreenView != null) {
+            intentos = 1;
+            this.context = context;
+            this.transaccion = transaccion;
+            creditoScreenInteractor.consultarServicios(context, transaccion);
+        }
+    }
+
+
+    @Override
+    public void consumir(Context context, Transaccion transaccion) {
+        if (creditoScreenView != null) {
+            this.context = context;
+            this.transaccion = transaccion;
+            creditoScreenInteractor.consumir(context, transaccion);
+        }
+    }
+
     /**
      * Metodo para obtener el numero de tarjeta desde el dispositivo
      *
@@ -96,6 +123,9 @@ public class CreditoScreenPresenterImpl implements CreditoScreenPresenter {
     public void onEventMainThread(CreditoScreenEvent creditoScreenEvent) {
         switch (creditoScreenEvent.getEventType()) {
 
+            case CreditoScreenEvent.onConsultarServiciosSuccess:
+                onConsultarServiciosSuccess(creditoScreenEvent.getListServicios());
+                break;
             case CreditoScreenEvent.onTransaccionSuccess:
                 onTransaccionSuccess();
                 break;
@@ -114,16 +144,66 @@ public class CreditoScreenPresenterImpl implements CreditoScreenPresenter {
             case CreditoScreenEvent.onImprecionReciboError:
                 onImprimirError(creditoScreenEvent.getErrorMessage());
                 break;
+            case CreditoScreenEvent.onConsultarServiciosError:
+                if(intentos <= 3){
+                    creditoScreenInteractor.consultarServicios(context, transaccion);
+                    intentos++;
+                }else{
+                    onImprimirError(creditoScreenEvent.getErrorMessage());
+                }
+                break;
+            case CreditoScreenEvent.onTransaccionConError:
+                onTransaccionConError(creditoScreenEvent.getErrorMessage());
+                break;
+            case CreditoScreenEvent.onTarjetaInactiva:
+                onTarjetaInactiva(creditoScreenEvent.getErrorMessage());
+                break;
+            case CreditoScreenEvent.onTarjetaNoValida:
+                onTarjetaNoValida(creditoScreenEvent.getErrorMessage());
+                break;
+            case CreditoScreenEvent.onCambioDeClaveObligatorio:
+                onCambioDeClaveObligatorio();
+                break;
+            case CreditoScreenEvent.onCosumirServiciosSuccess:
+                onCosumirServiciosSuccess(creditoScreenEvent.getInformacionTransaccion());
+                break;
+            case CreditoScreenEvent.onCosumirServiciosError:
+                onCosumirServiciosError(creditoScreenEvent.getErrorMessage());
+                break;
+            case CreditoScreenEvent.onTerminalInactiva:
+                onTarjetaInactiva(creditoScreenEvent.getErrorMessage());
+                break;
 
         }
     }
-
 
     /**
      * #############################################################################################
      * Metodo propios de la clase
      * #############################################################################################
      */
+
+    private void onConsultarServiciosSuccess(ArrayList<Servicio> lista) {
+        if (creditoScreenView != null) {
+            creditoScreenView.handleConsultarServiciosSuccess(lista);
+        }
+    }
+
+    private void onCosumirServiciosError(String errorMessage) {
+        if (creditoScreenView != null) {
+            creditoScreenView.handleCosumirServiciosError(errorMessage);
+        }
+    }
+
+    private void onCosumirServiciosSuccess(InformacionTransaccion informacionTransaccion) {
+        if (creditoScreenView != null) {
+//            creditoScreenView.handleCosumirServiciosSuccess();
+            creditoScreenInteractor.cosumirSuccess(context, informacionTransaccion);
+
+        }
+    }
+
+
 
     /**
      * Metodo para manejar la transaccion del Web Service Correcta
@@ -179,4 +259,30 @@ public class CreditoScreenPresenterImpl implements CreditoScreenPresenter {
             creditoScreenView.handleImprimirReciboError(errorMessage);
         }
     }
+
+    private void onCambioDeClaveObligatorio() {
+
+        if (creditoScreenView != null) {
+            creditoScreenView.handleMostrarErrorEnVista("Cambio Obligatorio de Clave");
+        }
+    }
+
+    private void onTarjetaNoValida(String errorMessage) {
+        if (creditoScreenView != null) {
+            creditoScreenView.handleMostrarErrorEnVista(errorMessage);
+        }
+    }
+
+    private void onTarjetaInactiva(String errorMessage) {
+        if (creditoScreenView != null) {
+            creditoScreenView.handleMostrarErrorEnVista(errorMessage);
+        }
+    }
+
+    private void onTransaccionConError(String errorMessage) {
+        if (creditoScreenView != null) {
+            creditoScreenView.handleTransaccionConError(errorMessage);
+        }
+    }
+
 }

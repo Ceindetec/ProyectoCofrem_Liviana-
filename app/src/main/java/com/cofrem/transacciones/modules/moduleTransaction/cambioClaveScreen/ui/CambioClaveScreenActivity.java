@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.cofrem.transacciones.R;
 import com.cofrem.transacciones.TransactionScreenActivity_;
+import com.cofrem.transacciones.global.InfoGlobalSettings;
 import com.cofrem.transacciones.lib.KeyBoard;
 import com.cofrem.transacciones.lib.MagneticHandler;
 import com.cofrem.transacciones.models.InfoHeaderApp;
@@ -383,10 +384,10 @@ public class CambioClaveScreenActivity extends Activity implements CambioClaveSc
     }
 
     private void iniciarColorEditex(){
-        edtCambioClaveTransactionNumeroDocumentoValor.setBackgroundColor(Color.parseColor("#000000"));
-        edtCambioClaveTransactionClaveNuevaUsuarioContenidoClave.setBackgroundColor(Color.parseColor("#000000"));
-        edtCambioClaveTransactionClaveNuevaRepetirUsuarioContenidoClave.setBackgroundColor(Color.parseColor("#000000"));
-        edtCambioClaveTransactionClaveUsuarioContenidoClave.setBackgroundColor(Color.parseColor("#000000"));
+        edtCambioClaveTransactionNumeroDocumentoValor.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT));
+        edtCambioClaveTransactionClaveNuevaUsuarioContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT));
+        edtCambioClaveTransactionClaveNuevaRepetirUsuarioContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT));
+        edtCambioClaveTransactionClaveUsuarioContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT));
     }
 
     @LongClick({R.id.edtCambioClaveTransactionNumeroDocumentoValor,
@@ -410,19 +411,19 @@ public class CambioClaveScreenActivity extends Activity implements CambioClaveSc
         switch(v.getId()){
             case R.id.edtCambioClaveTransactionNumeroDocumentoValor:
                 edtCambioClaveTransactionNumeroDocumentoValor.requestFocus();
-                edtCambioClaveTransactionNumeroDocumentoValor.setBackgroundColor(Color.parseColor("#464647"));
+                edtCambioClaveTransactionNumeroDocumentoValor.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT_COFUS));
                 break;
             case R.id.edtCambioClaveTransactionClaveUsuarioContenidoClave:
                 edtCambioClaveTransactionClaveUsuarioContenidoClave.requestFocus();
-                edtCambioClaveTransactionClaveUsuarioContenidoClave.setBackgroundColor(Color.parseColor("#464647"));
+                edtCambioClaveTransactionClaveUsuarioContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT_COFUS));
                 break;
             case R.id.edtCambioClaveTransactionClaveNuevaUsuarioContenidoClave:
                 edtCambioClaveTransactionClaveNuevaUsuarioContenidoClave.requestFocus();
-                edtCambioClaveTransactionClaveNuevaUsuarioContenidoClave.setBackgroundColor(Color.parseColor("#464647"));
+                edtCambioClaveTransactionClaveNuevaUsuarioContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT_COFUS));
                 break;
             case R.id.edtCambioClaveTransactionClaveNuevaRepetirUsuarioContenidoClave:
                 edtCambioClaveTransactionClaveNuevaRepetirUsuarioContenidoClave.requestFocus();
-                edtCambioClaveTransactionClaveNuevaRepetirUsuarioContenidoClave.setBackgroundColor(Color.parseColor("#464647"));
+                edtCambioClaveTransactionClaveNuevaRepetirUsuarioContenidoClave.setBackgroundColor(Color.parseColor(InfoGlobalSettings.COLOR_EDITEXT_COFUS));
                 break;
         }
 

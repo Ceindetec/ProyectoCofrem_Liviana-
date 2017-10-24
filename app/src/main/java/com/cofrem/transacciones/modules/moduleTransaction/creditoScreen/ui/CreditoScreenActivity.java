@@ -6,12 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,9 @@ import com.cofrem.transacciones.MainScreenActivity_;
 import com.cofrem.transacciones.global.InfoGlobalSettingsBlockButtons;
 import com.cofrem.transacciones.lib.MagneticHandler;
 import com.cofrem.transacciones.models.InfoHeaderApp;
+import com.cofrem.transacciones.models.MoneyTextWatcher;
 import com.cofrem.transacciones.models.PrintRow;
+import com.cofrem.transacciones.models.Servicio;
 import com.cofrem.transacciones.modules.moduleTransaction.creditoScreen.CreditoScreenPresenter;
 import com.cofrem.transacciones.modules.moduleTransaction.creditoScreen.CreditoScreenPresenterImpl;
 import com.cofrem.transacciones.R;
@@ -31,9 +34,12 @@ import com.cofrem.transacciones.models.Transaccion;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.Touch;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
@@ -80,7 +86,13 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
     @ViewById
     RelativeLayout bodyContentCreditoSelectServicio;
     @ViewById
+    RelativeLayout bodyContentCreditoErrorTarjeta;
+    @ViewById
     FrameLayout frlPgbHldTransactionCredito;
+
+
+    @ViewById
+    ListView lvCreditoTransactionServicios;
 
     //Paso transaction_credito_paso_valor_compra
     @ViewById
@@ -109,6 +121,8 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
     //Paso content_transaction_credito_paso_transaccion_error
     @ViewById
     TextView txvCreditoTransactionErrorDetalleTexto;
+    @ViewById
+    TextView txvCreditoTransactionErrorMensaje;
 
     //Model que almacena la transaccion actual
     Transaccion modelTransaccion = new Transaccion();
@@ -155,6 +169,8 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
         //Coloca la informacion del encabezado
         setInfoHeader();
 
+        edtCreditoTransactionValorCompraValor.addTextChangedListener(new MoneyTextWatcher(edtCreditoTransactionValorCompraValor));
+
         //Inicializa el paso del valor del consumo
         pasoTransaccion = PASO_VALOR_CONSUMO;
 
@@ -188,7 +204,7 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
      * @return retorno de Boolean
      */
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
         /*
           Keycodes disponibles
 
@@ -316,6 +332,33 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
       #############################################################################################
      */
 
+    @Override
+    public void handleConsultarServiciosSuccess(ArrayList<Servicio> lista) {
+
+        hideProgress();
+
+        if (lista.size() > 0) {
+
+            ArrayList<Servicio> listaAdapter = new ArrayList<>();
+
+            for (Servicio servicio : lista) {
+                listaAdapter.add(new Servicio(servicio.getCodigo(), servicio.getDescripcion(), ContextCompat.getDrawable(this, R.drawable.if_back_d)));
+            }
+
+            AdapterServicio adapter = new AdapterServicio(this, listaAdapter);
+
+            lvCreditoTransactionServicios.setAdapter(adapter);
+
+            //Oculta la vista de deslizar tarjeta
+            bodyContentCreditoDesliceTarjeta.setVisibility(View.GONE);
+
+            //Muestra la vista de contraseña de usuario
+            bodyContentCreditoSelectServicio.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
     /**
      * Metodo para manejar la transaccion exitosa
      */
@@ -412,6 +455,50 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
 
     }
 
+    @Override
+    public void handleTransaccionConError(String error) {
+        hideProgress();
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void handleMostrarErrorEnVista(String error) {
+
+        hideProgress();
+
+        txvCreditoTransactionErrorMensaje.setText(error);
+
+        inicializarOcultamientoVistas();
+
+        bodyContentCreditoErrorTarjeta.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void handleCosumirServiciosError(String errorMessage) {
+
+        hideProgress();
+
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void handleCosumirServiciosSuccess() {
+
+        //Oculta la barra de progreso
+        hideProgress();
+
+        //Oculta la vista del Host de conexion
+        bodyContentCreditoPassUsuario.setVisibility(View.GONE);
+
+        //Muestra la vista del Port de conexion
+        bodyContentCreditoTransaccionExitosa.setVisibility(View.VISIBLE);
+
+        //Actualiza el paso actual
+        pasoTransaccion++;
+    }
+
+
     /*
       #############################################################################################
       Metodo propios de la clase
@@ -451,6 +538,7 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
         bodyContentCreditoPassUsuario.setVisibility(View.GONE);
         bodyContentCreditoTransaccionExitosa.setVisibility(View.GONE);
         bodyContentCreditoTransaccionErronea.setVisibility(View.GONE);
+        bodyContentCreditoErrorTarjeta.setVisibility(View.GONE);
 
     }
 
@@ -520,7 +608,9 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
             R.id.btnCreditoTransactionVerificacionDatosBotonCancelar,
             R.id.btnCreditoTransactionLecturaIncorrectaBotonSalir,
             R.id.btnCreditoTransactionClaveUsuarioBotonCancelar,
-            R.id.btnCreditoTransactionErrorBotonSalir
+            R.id.btnCreditoTransactionErrorBotonSalir,
+            R.id.btnCreditoTransactionServiciosBotonCancelar,
+            R.id.btnCreditoTransactionErrorTarjetaBotonSalir
     })
     public void navigateToTransactionScreen() {
         new Handler().postDelayed(new Runnable() {
@@ -570,6 +660,9 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
 
         //Se obtiene el texto del valor del consumo
         String valorCompra = edtCreditoTransactionValorCompraValor.getText().toString();
+
+        valorCompra = valorCompra.replace(".", "");
+        valorCompra = valorCompra.replace(",", "");
 
         //Vacia la caja del valor del consumo
         edtCreditoTransactionValorCompraValor.setText("");
@@ -746,14 +839,20 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
      */
     private void lecturaTarjetaCorrecta() {
 
-        //Oculta la vista de deslizar tarjeta
-        bodyContentCreditoDesliceTarjeta.setVisibility(View.GONE);
-
-        //Muestra la vista de contraseña de usuario
-        bodyContentCreditoSelectServicio.setVisibility(View.VISIBLE);
-
         //Actualiza el paso actual
         pasoTransaccion = PASO_SELECT_SERVICIOS;
+
+        //Mostrar la barra de progreso
+        showProgress();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                creditoScreenPresenter.consultarServicios(CreditoScreenActivity.this, modelTransaccion);
+            }
+        }, 100);
+
+
     }
 
     /**
@@ -768,6 +867,27 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
         bodyContentCreditoLecturaIncorrecta.setVisibility(View.VISIBLE);
 
     }
+
+
+    @ItemClick(R.id.lvCreditoTransactionServicios)
+    void serviciosListItemCliced(Servicio servicio){
+
+        //Actualiza el paso actual
+        pasoTransaccion = PASO_CLAVE_USUARIO;
+
+        modelTransaccion.addServicio(servicio.getCodigo());
+
+        //Oculta la vista de seleccion de servicio
+        bodyContentCreditoSelectServicio.setVisibility(View.GONE);
+
+        //Muestra la vista de password usuario
+        bodyContentCreditoPassUsuario.setVisibility(View.VISIBLE);
+
+
+
+    }
+
+
 
     /**
      * Metodo para registrar la contraseña del usuario
@@ -786,13 +906,13 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
             //Se registra la contraseña en el modelo
             modelTransaccion.setClave(Integer.valueOf(passwordUser));
 
-            //TODO: agregar las diferentes encriptaciones
-            //Se registra el tipo de encriptacion en el modelo
-            modelTransaccion.setTipo_encriptacion(Transaccion.CODIGO_ENCR_NO_ENCRIPTADO);
-
-            //TODO: agregar los diferentes tipos de productos
-            //Se registra el tipo de producto en el modelo
-            modelTransaccion.setTipo_servicio(Transaccion.CODIGO_PRODUCTO_CUPO_ROTATIVO);
+//            //TODO: agregar las diferentes encriptaciones
+//            //Se registra el tipo de encriptacion en el modelo
+//            modelTransaccion.setTipo_encriptacion(Transaccion.CODIGO_ENCR_NO_ENCRIPTADO);
+//
+//            //TODO: agregar los diferentes tipos de productos
+//            //Se registra el tipo de producto en el modelo
+//            modelTransaccion.setTipo_servicio(Transaccion.CODIGO_PRODUCTO_CUPO_ROTATIVO);
 
             //Actualiza el paso actual
             pasoTransaccion++;
@@ -803,7 +923,7 @@ public class CreditoScreenActivity extends Activity implements CreditoScreenView
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    creditoScreenPresenter.registrarTransaccion(CreditoScreenActivity.this, modelTransaccion);
+                    creditoScreenPresenter.consumir(CreditoScreenActivity.this, modelTransaccion);
                 }
             }, 100);
 

@@ -95,7 +95,7 @@ class DatabaseManager {
          * Columnas de la tabla
          */
         static final String COLUMN_TRANSACCIONES_ID = "id";
-        static final String COLUMN_TRANSACCIONES_PRODUCTO_ID = "producto_id";
+        static final String COLUMN_TRANSACCIONES_SERVICIOS = "servicios";
         static final String COLUMN_TRANSACCIONES_NUMERO_CARGO = "numero_cargo";
         static final String COLUMN_TRANSACCIONES_NUMERO_TARJETA = "numero_tarjeta";
         static final String COLUMN_TRANSACCIONES_VALOR = "valor";
@@ -114,7 +114,7 @@ class DatabaseManager {
         static final String CREATE_TABLE_TRANSACCIONES =
                 "CREATE TABLE " + TABLE_NAME_TRANSACCIONES + "(" +
                         COLUMN_TRANSACCIONES_ID + " " + INT_TYPE + " " + PRIMARY_KEY + " " + AUTOINCREMENT + "," +
-                        COLUMN_TRANSACCIONES_PRODUCTO_ID + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +
+                        COLUMN_TRANSACCIONES_SERVICIOS + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +
                         COLUMN_TRANSACCIONES_NUMERO_CARGO + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +
                         COLUMN_TRANSACCIONES_NUMERO_TARJETA + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +
                         COLUMN_TRANSACCIONES_VALOR + " " + STRING_TYPE + " " + ATTR_NOT_NULL + "," +

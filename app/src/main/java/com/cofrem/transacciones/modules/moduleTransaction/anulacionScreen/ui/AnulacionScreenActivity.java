@@ -689,7 +689,7 @@ public class AnulacionScreenActivity extends Activity implements AnulacionScreen
         if (numeroCargo.length() > 0 && !numeroCargo.equals("0")) {
 
             //Registra el numero de cargo
-            modelTransaccion.setNumero_cargo(numeroCargo);
+            modelTransaccion.setNumero_transaccion(numeroCargo);
 
             //Muestra la barra de progreso
             showProgress();
@@ -698,7 +698,7 @@ public class AnulacionScreenActivity extends Activity implements AnulacionScreen
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    anulacionScreenPresenter.obtenerValorTransaccion(AnulacionScreenActivity.this, modelTransaccion.getNumero_cargo());
+                    anulacionScreenPresenter.obtenerValorTransaccion(AnulacionScreenActivity.this, modelTransaccion.getNumero_transaccion());
                 }
             }, 100);
 
@@ -730,7 +730,7 @@ public class AnulacionScreenActivity extends Activity implements AnulacionScreen
 
             //Registra el numero de cargo en la vista de verificacion
             txvAnulacionTransactionVerificacionDatosNumeroCargo.setText(
-                    modelTransaccion.getNumero_cargo()
+                    modelTransaccion.getNumero_transaccion()
             );
 
             //Registra el numero de documento en la vista de verificacion
@@ -745,7 +745,7 @@ public class AnulacionScreenActivity extends Activity implements AnulacionScreen
 
             //Registra el numero de cargo en la vista de verificacion
             txvAnulacionTransactionDesliceTarjetaDatosNumeroCargo.setText(
-                    modelTransaccion.getNumero_cargo()
+                    modelTransaccion.getNumero_transaccion()
             );
 
             //Registra el numero de documento en la vista de verificacion
@@ -920,7 +920,7 @@ public class AnulacionScreenActivity extends Activity implements AnulacionScreen
 
             //TODO: agregar los diferentes tipos de productos
             //Se registra el tipo de producto en el modelo
-            modelTransaccion.setTipo_servicio(Transaccion.CODIGO_PRODUCTO_CUPO_ROTATIVO);
+//            modelTransaccion.setTipo_servicio(Transaccion.CODIGO_PRODUCTO_CUPO_ROTATIVO);
 
             //Actualiza el paso actual
             pasoTransaction++;
