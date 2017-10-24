@@ -8,6 +8,19 @@ import com.cofrem.transacciones.models.Transaccion;
 public interface CreditoScreenPresenter {
 
     /**
+     * Metodo encargado de consultar los servicios activos asociados a una tarjeta
+     * @param context
+     * @param transaccion
+     */
+    void consultarServicios(Context context, Transaccion transaccion);
+
+    /**
+     * Metodo encargado de hacer la transaccion
+     *
+     */
+    void consumir(Context context, Transaccion transaccion);
+
+    /**
      * Metodo para obtener el numero de tarjeta desde el dispositivo
      *
      * @param context

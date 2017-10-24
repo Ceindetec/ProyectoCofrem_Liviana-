@@ -77,7 +77,6 @@ public class VolleyTransaction {
                             @Override
                             public void onErrorResponse(VolleyError error) {
 
-//                                Log.d(TAG_ERROR_VOLLEY, "error");
                                 callback.onError("Error: no fue posible establecer comunicación con el servidor");
 
                             }

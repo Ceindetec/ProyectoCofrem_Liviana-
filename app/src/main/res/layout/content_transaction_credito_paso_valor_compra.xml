@@ -25,12 +25,12 @@
 
     <EditText
         android:id="@+id/edtCreditoTransactionValorCompraValor"
-        style="@style/StyleValueNumberPrimary"
+        style="@style/StyleValueTextPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txvCreditoTransactionValorCompraSubtitle"
         android:layout_marginBottom="@dimen/appMarginBottom"
-        android:maxLength="7" />
+        android:maxLength="9" />
 
     <Button
         android:id="@+id/btnCreditoTransactionValorCompraBotonCancelar"

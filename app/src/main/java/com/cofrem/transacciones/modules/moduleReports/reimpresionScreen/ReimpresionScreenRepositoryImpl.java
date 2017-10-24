@@ -77,9 +77,9 @@ public class ReimpresionScreenRepositoryImpl implements ReimpresionScreenReposit
 
         for (Transaccion modelTransaccion : listaTransacciones) {
             if (modelTransaccion.getTipo_transaccion() == Transaccion.TIPO_TRANSACCION_CONSUMO) {
-                transacLists.add(new TransacList(codigoTermial,modelTransaccion.getNumero_cargo(),modelTransaccion.getNumero_documento(),Integer.toString(modelTransaccion.getValor()),TransacList.ESTADO_ACTIVO_SIN_CIERRE));
+                transacLists.add(new TransacList(codigoTermial,modelTransaccion.getNumero_transaccion(),modelTransaccion.getNumero_documento(),Integer.toString(modelTransaccion.getValor()),TransacList.ESTADO_ACTIVO_SIN_CIERRE));
             } else {
-                transacLists.add(new TransacList(codigoTermial,modelTransaccion.getNumero_cargo(),modelTransaccion.getNumero_documento(),Integer.toString(modelTransaccion.getValor()),TransacList.ESTADO_DEVOLUCION_SIN_CIERRE));
+                transacLists.add(new TransacList(codigoTermial,modelTransaccion.getNumero_transaccion(),modelTransaccion.getNumero_documento(),Integer.toString(modelTransaccion.getValor()),TransacList.ESTADO_DEVOLUCION_SIN_CIERRE));
             }
         }
 
@@ -236,7 +236,7 @@ public class ReimpresionScreenRepositoryImpl implements ReimpresionScreenReposit
                 totalConsumo += modelTransaccion.getValor();
 //                printRows.add(new PrintRow(context.getResources().getString(
 //                        R.string.recibo_separador_fecha, modelTransaccion.getRegistro()), new StyleConfig(StyleConfig.Align.LEFT, gray, StyleConfig.FontSize.F1)));
-                printRows.add(new PrintRow(modelTransaccion.getNumero_cargo(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
+                printRows.add(new PrintRow(modelTransaccion.getNumero_transaccion(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
             } else {
                 listaAnulaciones.add(modelTransaccion);
             }
@@ -259,7 +259,7 @@ public class ReimpresionScreenRepositoryImpl implements ReimpresionScreenReposit
             totalAnulacion += modelTransaccion.getValor();
 //                printRows.add(new PrintRow(context.getResources().getString(
 //                        R.string.recibo_separador_fecha, modelTransaccion.getRegistro()), new StyleConfig(StyleConfig.Align.LEFT, gray, StyleConfig.FontSize.F1)));
-            printRows.add(new PrintRow(modelTransaccion.getNumero_cargo(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
+            printRows.add(new PrintRow(modelTransaccion.getNumero_transaccion(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
 
         }
 
@@ -341,7 +341,7 @@ public class ReimpresionScreenRepositoryImpl implements ReimpresionScreenReposit
                 totalConsumo += modelTransaccion.getValor();
 //                printRows.add(new PrintRow(context.getResources().getString(
 //                        R.string.recibo_separador_fecha, modelTransaccion.getRegistro()), new StyleConfig(StyleConfig.Align.LEFT, gray, StyleConfig.FontSize.F1)));
-                printRows.add(new PrintRow(modelTransaccion.getNumero_cargo() + "  " + modelTransaccion.getFecha_server(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
+                printRows.add(new PrintRow(modelTransaccion.getNumero_transaccion() + "  " + modelTransaccion.getFecha_server(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
             } else {
                 listaAnulaciones.add(modelTransaccion);
             }
@@ -365,7 +365,7 @@ public class ReimpresionScreenRepositoryImpl implements ReimpresionScreenReposit
             totalAnulacion += modelTransaccion.getValor();
 //                printRows.add(new PrintRow(context.getResources().getString(
 //                        R.string.recibo_separador_fecha, modelTransaccion.getRegistro()), new StyleConfig(StyleConfig.Align.LEFT, gray, StyleConfig.FontSize.F1)));
-            printRows.add(new PrintRow(modelTransaccion.getNumero_cargo() + "  " + modelTransaccion.getFecha_server(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
+            printRows.add(new PrintRow(modelTransaccion.getNumero_transaccion() + "  " + modelTransaccion.getFecha_server(), PrintRow.numberFormat(modelTransaccion.getValor()), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
 
         }
 //        printRows.add(new PrintRow("0000070" + "  " + "2017-08-17", PrintRow.numberFormat(3000000), new StyleConfig(StyleConfig.Align.LEFT, gray, 4)));
@@ -633,7 +633,7 @@ public class ReimpresionScreenRepositoryImpl implements ReimpresionScreenReposit
 
 
         printRows.add(new PrintRow(context.getResources().getString(
-                R.string.recibo_numero_transaccion), modelTransaccion.getNumero_cargo(), new StyleConfig(StyleConfig.Align.LEFT, gray)));
+                R.string.recibo_numero_transaccion), modelTransaccion.getNumero_transaccion(), new StyleConfig(StyleConfig.Align.LEFT, gray)));
 
         if (modelTransaccionAnulada == null)
             printRows.add(new PrintRow(context.getResources().getString(

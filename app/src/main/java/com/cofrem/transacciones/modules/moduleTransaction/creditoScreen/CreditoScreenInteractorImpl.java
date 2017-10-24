@@ -3,6 +3,7 @@ package com.cofrem.transacciones.modules.moduleTransaction.creditoScreen;
 import android.content.Context;
 
 import com.cofrem.transacciones.models.Transaccion;
+import com.cofrem.transacciones.models.modelsWS.modelTransaccion.InformacionTransaccion;
 
 class CreditoScreenInteractorImpl implements CreditoScreenInteractor {
     /**
@@ -33,6 +34,21 @@ class CreditoScreenInteractorImpl implements CreditoScreenInteractor {
      * Metodos sobrecargados de la interface
      * #############################################################################################
      */
+
+    @Override
+    public void consultarServicios(Context context, Transaccion transaccion) {
+        creditoScreenRepository.consultarServicios(context, transaccion);
+    }
+
+    @Override
+    public void consumir(Context context, Transaccion transaccion) {
+        creditoScreenRepository.consumir(context, transaccion);
+    }
+
+    @Override
+    public void cosumirSuccess(Context context, InformacionTransaccion informacionTransaccion) {
+        creditoScreenRepository.cosumirSuccess(context,informacionTransaccion);
+    }
 
     /**
      * Metodo para obtener el numero de tarjeta desde el dispositivo

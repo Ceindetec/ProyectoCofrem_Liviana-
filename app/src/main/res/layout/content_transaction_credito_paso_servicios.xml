@@ -23,6 +23,7 @@
         android:text="@string/transaction_text_seleccione_el_servicio" />
 
     <ListView
+        android:id="@+id/lvCreditoTransactionServicios"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/txvCreditoTransactionServiciosSubtitle"

@@ -102,42 +102,42 @@ public class AnulacionScreenRepositoryImpl implements AnulacionScreenRepository 
     @Override
     public void registrarTransaccion(Context context, Transaccion transaccion) {
 
-        ResultadoTransaccion resultadoTransaccion = registrarTransaccionConsumoWS(context, transaccion);
-
-        //Registra mediante el WS la transaccion
-        if (resultadoTransaccion != null) {
-
-            MessageWS messageWS = resultadoTransaccion.getMessageWS();
-
-            if (messageWS.getCodigoMensaje() == MessageWS.statusTransaccionExitosa) {
-
-                //Registro en la base de datos de la transaccion
-                if (registrarTransaccionConsumoDB(context, resultadoTransaccion.getInformacionTransaccion())) {
-
-                    postEvent(AnulacionScreenEvent.onTransaccionSuccess);
-
-                    modelTransaccion = transaccion;
-
-                    //Imprime el recibo
-                    imprimirRecibo(context,context.getResources().getString(
-                            R.string.recibo_copia_comercio));
-
-                } else {
-
-                    //Error en el registro en la Base de Datos la transaccion
-                    postEvent(AnulacionScreenEvent.onTransaccionDBRegisterError);
-
-                }
-            } else {
-                //Error en el registro de la transaccion del web service
-                postEvent(AnulacionScreenEvent.onTransaccionWSRegisterError, messageWS.getDetalleMensaje());
-            }
-        } else
-
-        {
-            //Error en la conexion con el Web Service
-            postEvent(AnulacionScreenEvent.onTransaccionWSConexionError);
-        }
+//        ResultadoTransaccion resultadoTransaccion = registrarTransaccionConsumoWS(context, transaccion);
+//
+//        //Registra mediante el WS la transaccion
+//        if (resultadoTransaccion != null) {
+//
+//            MessageWS messageWS = resultadoTransaccion.getMessageWS();
+//
+//            if (messageWS.getCodigoMensaje() == MessageWS.statusTransaccionExitosa) {
+//
+//                //Registro en la base de datos de la transaccion
+//                if (registrarTransaccionConsumoDB(context, resultadoTransaccion.getInformacionTransaccion())) {
+//
+//                    postEvent(AnulacionScreenEvent.onTransaccionSuccess);
+//
+//                    modelTransaccion = transaccion;
+//
+//                    //Imprime el recibo
+//                    imprimirRecibo(context,context.getResources().getString(
+//                            R.string.recibo_copia_comercio));
+//
+//                } else {
+//
+//                    //Error en el registro en la Base de Datos la transaccion
+//                    postEvent(AnulacionScreenEvent.onTransaccionDBRegisterError);
+//
+//                }
+//            } else {
+//                //Error en el registro de la transaccion del web service
+//                postEvent(AnulacionScreenEvent.onTransaccionWSRegisterError, messageWS.getDetalleMensaje());
+//            }
+//        } else
+//
+//        {
+//            //Error en la conexion con el Web Service
+//            postEvent(AnulacionScreenEvent.onTransaccionWSConexionError);
+//        }
 
     }
 
@@ -157,91 +157,91 @@ public class AnulacionScreenRepositoryImpl implements AnulacionScreenRepository 
      * @return
      */
 
-    private ResultadoTransaccion registrarTransaccionConsumoWS(Context context, Transaccion transaccion) {
-
-        //Se crea una variable de estado de la transaccion
-        ResultadoTransaccion resultadoTransaccion = null;
-
-        //Inicializacion y declaracion de parametros para la peticion web service
-        String[][] params = {
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_CODIGO_TERMINAL, AppDatabase.getInstance(context).obtenerCodigoTerminal()},
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_NUMERO_APROBACION, transaccion.getNumero_cargo()},
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_CEDULA_USUARIO, transaccion.getNumero_documento()},
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_NUMERO_TARJETA, transaccion.getNumero_tarjeta()},
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_CLAVE_USUARIO, String.valueOf(transaccion.getClave())},
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_TIPO_ENCRIPTACION, String.valueOf(transaccion.getTipo_encriptacion())},
-                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_VALOR_APROBADO, String.valueOf(transaccion.getValor())},
-        };
-
-        //Creacion del modelo TransactionWS para ser usado dentro del webservice
-        TransactionWS transactionWS = new TransactionWS(
-                InfoGlobalTransaccionSOAP.HTTP + AppDatabase.getInstance(context).obtenerURLConfiguracionConexion() + InfoGlobalTransaccionSOAP.WEB_SERVICE_URI,
-                InfoGlobalTransaccionSOAP.HTTP + InfoGlobalTransaccionSOAP.NAME_SPACE,
-                InfoGlobalTransaccionSOAP.METHOD_NAME_ANULACION,
-                params);
-
-        //Inicializacion del objeto que sera devuelto por la transaccion del webservice
-        SoapObject soapTransaction = null;
-
-        try {
-
-            //Transaccion solicitada al web service
-            soapTransaction = new KsoapAsync(new KsoapAsync.ResponseKsoapAsync() {
-
-                /**
-                 * Metodo sobrecargado que maneja el callback de los datos
-                 *
-                 * @param soapResponse
-                 * @return
-                 */
-                @Override
-                public SoapObject processFinish(SoapObject soapResponse) {
-                    return soapResponse;
-                }
-
-            }).execute(transactionWS).get();
-
-        } catch (InterruptedException | ExecutionException e) {
-
-            e.printStackTrace();
-
-        }
-
-        //Si la transaccion no genero resultado regresa un establecimiento vacio
-        if (soapTransaction != null) {
-
-            //Inicializacion del modelo MessageWS
-            MessageWS messageWS = new MessageWS(
-                    (SoapObject) soapTransaction.getProperty(MessageWS.PROPERTY_MESSAGE)
-            );
-
-            switch (messageWS.getCodigoMensaje()) {
-
-                //Transaccion exitosa
-                case MessageWS.statusTransaccionExitosa:
-
-                    InformacionTransaccion informacionTransaccion = new InformacionTransaccion(
-                            (SoapObject) soapTransaction.getProperty(InformacionTransaccion.PROPERTY_TRANSAC_RESULT)
-                    );
-
-                    resultadoTransaccion = new ResultadoTransaccion(
-                            informacionTransaccion,
-                            messageWS
-                    );
-                    break;
-
-                default:
-                    resultadoTransaccion = new ResultadoTransaccion(
-                            messageWS
-                    );
-                    break;
-            }
-
-        }
-
-        //Retorno de estado de transaccion
-        return resultadoTransaccion;
-    }
+//    private ResultadoTransaccion registrarTransaccionConsumoWS(Context context, Transaccion transaccion) {
+//
+//        //Se crea una variable de estado de la transaccion
+//        ResultadoTransaccion resultadoTransaccion = null;
+//
+//        //Inicializacion y declaracion de parametros para la peticion web service
+//        String[][] params = {
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_CODIGO_TERMINAL, AppDatabase.getInstance(context).obtenerCodigoTerminal()},
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_NUMERO_APROBACION, transaccion.getNumero_cargo()},
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_CEDULA_USUARIO, transaccion.getNumero_documento()},
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_NUMERO_TARJETA, transaccion.getNumero_tarjeta()},
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_CLAVE_USUARIO, String.valueOf(transaccion.getClave())},
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_TIPO_ENCRIPTACION, String.valueOf(transaccion.getTipo_encriptacion())},
+//                {InfoGlobalTransaccionSOAP.PARAM_NAME_ANULACION_VALOR_APROBADO, String.valueOf(transaccion.getValor())},
+//        };
+//
+//        //Creacion del modelo TransactionWS para ser usado dentro del webservice
+//        TransactionWS transactionWS = new TransactionWS(
+//                InfoGlobalTransaccionSOAP.HTTP + AppDatabase.getInstance(context).obtenerURLConfiguracionConexion() + InfoGlobalTransaccionSOAP.WEB_SERVICE_URI,
+//                InfoGlobalTransaccionSOAP.HTTP + InfoGlobalTransaccionSOAP.NAME_SPACE,
+//                InfoGlobalTransaccionSOAP.METHOD_NAME_ANULACION,
+//                params);
+//
+//        //Inicializacion del objeto que sera devuelto por la transaccion del webservice
+//        SoapObject soapTransaction = null;
+//
+//        try {
+//
+//            //Transaccion solicitada al web service
+//            soapTransaction = new KsoapAsync(new KsoapAsync.ResponseKsoapAsync() {
+//
+//                /**
+//                 * Metodo sobrecargado que maneja el callback de los datos
+//                 *
+//                 * @param soapResponse
+//                 * @return
+//                 */
+//                @Override
+//                public SoapObject processFinish(SoapObject soapResponse) {
+//                    return soapResponse;
+//                }
+//
+//            }).execute(transactionWS).get();
+//
+//        } catch (InterruptedException | ExecutionException e) {
+//
+//            e.printStackTrace();
+//
+//        }
+//
+//        //Si la transaccion no genero resultado regresa un establecimiento vacio
+//        if (soapTransaction != null) {
+//
+//            //Inicializacion del modelo MessageWS
+//            MessageWS messageWS = new MessageWS(
+//                    (SoapObject) soapTransaction.getProperty(MessageWS.PROPERTY_MESSAGE)
+//            );
+//
+//            switch (messageWS.getCodigoMensaje()) {
+//
+//                //Transaccion exitosa
+//                case MessageWS.statusTransaccionExitosa:
+//
+//                    InformacionTransaccion informacionTransaccion = new InformacionTransaccion(
+//                            (SoapObject) soapTransaction.getProperty(InformacionTransaccion.PROPERTY_TRANSAC_RESULT)
+//                    );
+//
+//                    resultadoTransaccion = new ResultadoTransaccion(
+//                            informacionTransaccion,
+//                            messageWS
+//                    );
+//                    break;
+//
+//                default:
+//                    resultadoTransaccion = new ResultadoTransaccion(
+//                            messageWS
+//                    );
+//                    break;
+//            }
+//
+//        }
+//
+//        //Retorno de estado de transaccion
+//        return resultadoTransaccion;
+//    }
 
     /**
      * Metodo que registra en la base de datos interna la transaccion
@@ -297,7 +297,7 @@ public class AnulacionScreenRepositoryImpl implements AnulacionScreenRepository 
         PrintRow.printOperador(context, printRows, gray, 10);
 
         printRows.add(new PrintRow(context.getResources().getString(
-                R.string.recibo_numero_transaccion), modelTransaccion.getNumero_cargo(), new StyleConfig(StyleConfig.Align.LEFT, gray)));
+                R.string.recibo_numero_transaccion), modelTransaccion.getNumero_transaccion(), new StyleConfig(StyleConfig.Align.LEFT, gray)));
 //        printRows.add(new PrintRow(context.getResources().getString(
 //                R.string.recibo_fecha),fecha_transaccion, new StyleConfig(StyleConfig.Align.LEFT, gray)));
         printRows.add(new PrintRow(context.getResources().getString(
